@@ -23,6 +23,7 @@ class EntrustGuiServiceProvider extends ServiceProvider{
 
 		$this->loadViewsFrom(realpath(__DIR__.'/../views'), 'entrust-gui');
 		$this->setupRoutes($this->app->router);
+    $this->loadTranslationsFrom(realpath(__DIR__.'/../translations'), 'entrust-gui');
 
 
 		// this  for conig
