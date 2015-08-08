@@ -7,4 +7,12 @@
   <label for="password">Password</label>
   <input type="password" class="form-control" id="password" placeholder="Password" name="password">
 </div>
+<div class="form-group">
+  <label for="roles">Roles</label>
+  <select name="roles[]" multiple class="form-control">
+    @foreach($roles as $index => $role)
+      <option value="{{ $index }}" {{ ($user->roles->contains('id', $index)) ? 'selected' : '' }}>{{ $role }}</option>
+    @endforeach
+  </select>
+</div>
 

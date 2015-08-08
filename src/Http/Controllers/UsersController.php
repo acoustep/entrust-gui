@@ -15,6 +15,7 @@ class UsersController extends Controller
 {
 
   protected $user;
+  protected $role;
   protected $config;
   protected $request;
 
@@ -22,9 +23,8 @@ class UsersController extends Controller
   {
     $this->config = $config;
     $this->request = $request;
-    $user_class = $this->config->get('auth.model');
-
-    $this->user = new $user_class;
+    $this->user = $this->newUserInstance();
+    $this->role = $this->newRoleInstance();
   }
 
 	/**
@@ -43,27 +43,31 @@ class UsersController extends Controller
 
   public function create()
   {
-    $user_class = $this->config->get('auth.model');
-    $user = new $user_class;
+    $user = $this->newUserInstance();
+    $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::users.create', compact(
-      'user'
+      'user',
+      'roles'
     ));
   
   }
   public function store()
   {
-    $this->user->create($this->request->all());
+    $user = $this->user->create($this->request->all());
+    $user->roles()->sync($this->request->get('roles', []));
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.created'));
   
   }
 
   public function edit($id)
   {
-    $user = $this->user->find($id);
+    $user = $this->user->with('roles')->find($id);
+    $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::users.edit', compact(
-      'user'
+      'user',
+      'roles'
     ));
   
   }
@@ -71,6 +75,7 @@ class UsersController extends Controller
   {
     $user = $this->user->find($id);
     $user->update($this->request->all());
+    $user->roles()->sync($this->request->get('roles', []));
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.updated'));
   
   }
@@ -79,5 +84,19 @@ class UsersController extends Controller
     $this->user->destroy($id);
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.destroyed'));
   
+  }
+
+  protected function newUserInstance()
+  {
+    $user_class = $this->config->get('auth.model');
+
+    return new $user_class;
+  }
+
+  protected function newRoleInstance()
+  {
+    $role_class = $this->config->get('entrust.role');
+
+    return new $role_class;
   }
 }
