@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 // use Illuminate\Support\Facades\Config;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
+use Hash;
 
 
 class UsersController extends Controller
@@ -54,7 +55,9 @@ class UsersController extends Controller
   }
   public function store()
   {
-    $user = $this->user->create($this->request->all());
+    $data = $this->request->all();
+    $data['password'] = Hash::make($data['password']);
+    $user = $this->user->create($data);
     $user->roles()->sync($this->request->get('roles', []));
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.created'));
   
@@ -74,7 +77,11 @@ class UsersController extends Controller
   public function update($id)
   {
     $user = $this->user->find($id);
-    $user->update($this->request->all());
+    $data = $this->request->except('password');
+    if($this->request->get('password', false)) {
+      $data['password'] = Hash::make($this->request->get('password'));
+    }
+    $user->update($data);
     $user->roles()->sync($this->request->get('roles', []));
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.updated'));
   
