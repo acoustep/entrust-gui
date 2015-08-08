@@ -28,7 +28,7 @@ class EntrustGuiServiceProvider extends ServiceProvider{
 
 		// this  for conig
     $this->publishes([
-      __DIR__.'/config/entrust-gui.php' => config_path('entrust-gui.php'),
+      __DIR__.'/../config/entrust-gui.php' => config_path('entrust-gui.php'),
     ]);
 
 	}

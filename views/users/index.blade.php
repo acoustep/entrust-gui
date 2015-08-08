@@ -11,16 +11,16 @@
   @foreach($users as $user)
     <tr>
       <td>{{ $user->email }}</th>
-      <td>
-        <form action="{{ route('entrust-gui.users.destroy', $user->id) }}" method="post">
+      <td class="col-xs-3">
+        <form action="{{ route('entrust-gui::users.destroy', $user->id) }}" method="post">
           <input type="hidden" name="_method" value="DELETE">
           <input type="hidden" name="_token" value="{{ csrf_token() }}">
-          <a href="{{ route('entrust-gui.users.edit', $user->id) }}" class="btn btn-default">Edit</a>
-          <button class="btn btn-danger" type="submit">Delete</button>
+          <a class="btn btn-labeled btn-default" href="{{ route('entrust-gui::users.edit', $user->id) }}"><span class="btn-label"><i class="fa fa-pencil"></i></span>Edit</a>
+          <button type="submit" class="btn btn-labeled btn-danger"><span class="btn-label"><i class="fa fa-trash"></i></span>Delete</button>
         </form>
       </td>
     </tr>
   @endforeach
 </table>
-<a href="{{ route('entrust-gui.users.create') }}" class="btn btn-primary">Create User</a>
+<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::users.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create User</a>
 @endsection
