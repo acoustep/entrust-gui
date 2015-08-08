@@ -18,6 +18,7 @@ To do
 
 ## To do
 
+* Testing
 * Gateways and Repositories
 * Configuration
 * Middleware
@@ -25,3 +26,4 @@ To do
 * Validation
 * Events
 * Documentation
+* Permissions GUI

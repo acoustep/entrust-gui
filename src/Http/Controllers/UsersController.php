@@ -6,7 +6,7 @@
 
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Config;
+use Acoustep\EntrustGui\Gateways\UserGateway;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
 use Hash;
@@ -15,17 +15,15 @@ use Hash;
 class UsersController extends Controller
 {
 
-  protected $user;
-  protected $role;
-  protected $config;
+  protected $gateway;
   protected $request;
+  protected $role;
 
-  public function __construct(Config $config, Request $request)
+  public function __construct(Request $request, UserGateway $gateway)
   {
-    $this->config = $config;
     $this->request = $request;
-    $this->user = $this->newUserInstance();
-    $this->role = $this->newRoleInstance();
+    $this->gateway = $gateway;
+    $this->role = $this->gateway->newRoleInstance();
   }
 
 	/**
@@ -35,7 +33,7 @@ class UsersController extends Controller
 	 */
 	public function index()
 	{
-    $users = $this->user->paginate(5);
+    $users = $this->gateway->paginate(5);
 
     return view('entrust-gui::users.index', compact(
       'users'
@@ -44,7 +42,7 @@ class UsersController extends Controller
 
   public function create()
   {
-    $user = $this->newUserInstance();
+    $user = $this->gateway->newUserInstance();
     $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::users.create', compact(
@@ -55,17 +53,14 @@ class UsersController extends Controller
   }
   public function store()
   {
-    $data = $this->request->all();
-    $data['password'] = Hash::make($data['password']);
-    $user = $this->user->create($data);
-    $user->roles()->sync($this->request->get('roles', []));
+    $user = $this->gateway->create($this->request);
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.created'));
   
   }
 
   public function edit($id)
   {
-    $user = $this->user->with('roles')->find($id);
+    $user = $this->gateway->find($id);
     $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::users.edit', compact(
@@ -74,36 +69,17 @@ class UsersController extends Controller
     ));
   
   }
+
   public function update($id)
   {
-    $user = $this->user->find($id);
-    $data = $this->request->except('password');
-    if($this->request->get('password', false)) {
-      $data['password'] = Hash::make($this->request->get('password'));
-    }
-    $user->update($data);
-    $user->roles()->sync($this->request->get('roles', []));
+    $this->gateway->update($this->request, $id);
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.updated'));
-  
   }
+
   public function destroy($id)
   {
     $this->user->destroy($id);
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.destroyed'));
-  
   }
 
-  protected function newUserInstance()
-  {
-    $user_class = $this->config->get('auth.model');
-
-    return new $user_class;
-  }
-
-  protected function newRoleInstance()
-  {
-    $role_class = $this->config->get('entrust.role');
-
-    return new $role_class;
-  }
 }
