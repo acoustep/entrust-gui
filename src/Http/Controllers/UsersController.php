@@ -54,7 +54,7 @@ class UsersController extends Controller
   public function store()
   {
     $this->user->create($this->request->all());
-    return redirect(route('entrust-gui.users.index'))->withSuccess(trans('entrust-gui::users.created'));
+    return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.created'));
   
   }
 
@@ -71,13 +71,13 @@ class UsersController extends Controller
   {
     $user = $this->user->find($id);
     $user->update($this->request->all());
-    return redirect(route('entrust-gui.users.index'))->withSuccess(trans('entrust-gui::users.updated'));
+    return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.updated'));
   
   }
   public function destroy($id)
   {
     $this->user->destroy($id);
-    return redirect(route('entrust-gui.users.index'))->withSuccess(trans('entrust-gui::users.destroyed'));
+    return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.destroyed'));
   
   }
 }
