@@ -6,25 +6,20 @@
 
 
 use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Config;
-use Illuminate\Config\Repository as Config;
+use Acoustep\EntrustGui\Gateways\RoleGateway;
 use Illuminate\Http\Request;
 
 
 class RolesController extends Controller
 {
 
-  protected $role;
-  protected $config;
   protected $request;
+  protected $gateway;
 
-  public function __construct(Config $config, Request $request)
+  public function __construct(Request $request, RoleGateway $gateway)
   {
-    $this->config = $config;
     $this->request = $request;
-    $role_class = $this->config->get('entrust.role');
-
-    $this->role = new $role_class;
+    $this->gateway = $gateway;
   }
 
 	/**
@@ -34,7 +29,7 @@ class RolesController extends Controller
 	 */
 	public function index()
 	{
-    $roles = $this->role->paginate(5);
+    $roles = $this->gateway->paginate(5);
 
     return view('entrust-gui::roles.index', compact(
       'roles'
@@ -43,41 +38,37 @@ class RolesController extends Controller
 
   public function create()
   {
-    $role_class = $this->config->get('entrust.role');
-    $role = new $role_class;
+    $role = $this->gateway->newRoleInstance();
 
     return view('entrust-gui::roles.create', compact(
       'role'
     ));
-  
   }
+
   public function store()
   {
-    $this->role->create($this->request->all());
+    $this->gateway->create($this->request);
     return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.created'));
-  
   }
 
   public function edit($id)
   {
-    $role = $this->role->find($id);
+    $role = $this->gateway->find($id);
 
     return view('entrust-gui::roles.edit', compact(
       'role'
     ));
-  
   }
+
   public function update($id)
   {
-    $role = $this->role->find($id);
-    $role->update($this->request->all());
+    $role = $this->gateway->update($this->request, $id);
     return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.updated'));
-  
   }
+  
   public function destroy($id)
   {
-    $this->role->destroy($id);
+    $this->gateway->delete($id);
     return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.destroyed'));
-  
   }
 }

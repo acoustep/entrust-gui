@@ -7,9 +7,7 @@
 
 use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\UserGateway;
-use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
-use Hash;
 
 
 class UsersController extends Controller
@@ -51,6 +49,7 @@ class UsersController extends Controller
     ));
   
   }
+
   public function store()
   {
     $user = $this->gateway->create($this->request);

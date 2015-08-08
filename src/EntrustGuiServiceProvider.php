@@ -50,6 +50,7 @@ class EntrustGuiServiceProvider extends ServiceProvider{
   public function register()
   {
     $this->app->bind('Acoustep\EntrustGui\Repositories\UserRepository','Acoustep\EntrustGui\Repositories\UserRepositoryEloquent');
+    $this->app->bind('Acoustep\EntrustGui\Repositories\RoleRepository','Acoustep\EntrustGui\Repositories\RoleRepositoryEloquent');
   }
 }
 
