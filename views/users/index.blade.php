@@ -1,5 +1,6 @@
 @extends('entrust-gui::app')
 
+@section('heading', 'Users')
 
 @section('content')
 <table class="table table-striped">
