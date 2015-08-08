@@ -49,7 +49,7 @@ class EntrustGuiServiceProvider extends ServiceProvider{
 
   public function register()
   {
-  
+    $this->app->bind('Acoustep\EntrustGui\Repositories\UserRepository','Acoustep\EntrustGui\Repositories\UserRepositoryEloquent');
   }
 }
 

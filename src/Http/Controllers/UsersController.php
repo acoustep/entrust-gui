@@ -78,7 +78,7 @@ class UsersController extends Controller
 
   public function destroy($id)
   {
-    $this->user->destroy($id);
+    $this->gateway->delete($id);
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.destroyed'));
   }
 
