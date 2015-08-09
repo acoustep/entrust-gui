@@ -217,5 +217,4 @@ Each template yields to ```heading``` and ```content``` so make sure your new la
 * Translations
 * Validation
 * Events
-* Documentation
 * Permissions GUI
