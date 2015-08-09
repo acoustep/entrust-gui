@@ -3,6 +3,7 @@
 @section('heading', 'Roles')
 
 @section('content')
+<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create Role</a>
 <table class="table table-striped">
   <tr>
     <th>Name</th>
@@ -22,5 +23,7 @@
     </tr>
   @endforeach
 </table>
-<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create Role</a>
+<div class="text-center">
+  {!! $roles->render() !!}
+</div>
 @endsection

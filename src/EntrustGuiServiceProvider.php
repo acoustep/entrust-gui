@@ -47,8 +47,16 @@ class EntrustGuiServiceProvider extends ServiceProvider{
 		});
 	}
 
+  /**
+   * Register the service provider.
+   *
+   * @return void
+   */
   public function register()
   {
+
+    $this->app->register('Zizaco\Entrust\EntrustServiceProvider');
+    $this->app->register('Prettus\Repository\Providers\RepositoryServiceProvider');
     $this->app->bind('Acoustep\EntrustGui\Repositories\UserRepository','Acoustep\EntrustGui\Repositories\UserRepositoryEloquent');
     $this->app->bind('Acoustep\EntrustGui\Repositories\RoleRepository','Acoustep\EntrustGui\Repositories\RoleRepositoryEloquent');
   }

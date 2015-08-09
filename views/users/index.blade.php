@@ -3,6 +3,7 @@
 @section('heading', 'Users')
 
 @section('content')
+<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::users.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create User</a>
 <table class="table table-striped">
   <tr>
     <th>Email</th>
@@ -22,5 +23,7 @@
     </tr>
   @endforeach
 </table>
-<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::users.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create User</a>
+<div class="text-center">
+  {!! $users->render() !!}
+</div>
 @endsection

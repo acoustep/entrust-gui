@@ -20,7 +20,7 @@ class UserGateway {
   public function create($request)
   {
     $data = $request->except('password');
-    $data['password'] = Hash::make($request->get('password', ''));
+    $data['password'] = ($request->get('password', false)) ? Hash::make($request->get('password', '')) : '';
     $user = $this->user_repository->create($data);
     $user->roles()->sync($request->get('roles', []));
     return $user;
@@ -33,12 +33,11 @@ class UserGateway {
 
   public function update($request, $id)
   {
-    $user = $this->user_repository->find($id);
     $data = $request->except('password');
     if($request->get('password', false)) {
       $data['password'] = Hash::make($request->get('password'));
     }
-    $user->update($data);
+    $user = $this->user_repository->update($data, $id);
     $user->roles()->sync($request->get('roles', []));
     return $user;
   }

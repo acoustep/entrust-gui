@@ -2,7 +2,9 @@
 return [
   "layout" => "app",
   "route-prefix" => "entrust-gui",
-  "user-class" => \App\User::class,
-  "role-class" => \App\Role::class,
-  "permission-class" => \App\Permission::class,
+  "pagination" => [
+    "users" => 5,
+    "roles" => 5,
+    "permissions" => 5,
+  ]
 ];

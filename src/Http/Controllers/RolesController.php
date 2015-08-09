@@ -8,6 +8,8 @@
 use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\RoleGateway;
 use Illuminate\Http\Request;
+use Watson\Validating\ValidationException;
+use Config;
 
 
 class RolesController extends Controller
@@ -29,7 +31,7 @@ class RolesController extends Controller
 	 */
 	public function index()
 	{
-    $roles = $this->gateway->paginate(5);
+    $roles = $this->gateway->paginate(Config::get('entrust-gui.pagination.roles'));
 
     return view('entrust-gui::roles.index', compact(
       'roles'
@@ -47,7 +49,11 @@ class RolesController extends Controller
 
   public function store()
   {
-    $this->gateway->create($this->request);
+    try {
+      $this->gateway->create($this->request);
+    } catch(ValidationException $e) {
+      return back()->withErrors($e->getErrors());
+    }
     return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.created'));
   }
 
@@ -62,7 +68,11 @@ class RolesController extends Controller
 
   public function update($id)
   {
-    $role = $this->gateway->update($this->request, $id);
+    try {
+      $role = $this->gateway->update($this->request, $id);
+    } catch(ValidationException $e) {
+      return back()->withErrors($e->getErrors());
+    }
     return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.updated'));
   }
   

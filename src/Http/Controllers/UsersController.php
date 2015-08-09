@@ -8,7 +8,8 @@
 use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\UserGateway;
 use Illuminate\Http\Request;
-
+use Watson\Validating\ValidationException;
+use Config;
 
 class UsersController extends Controller
 {
@@ -31,7 +32,7 @@ class UsersController extends Controller
 	 */
 	public function index()
 	{
-    $users = $this->gateway->paginate(5);
+    $users = $this->gateway->paginate(Config::get('entrust-gui.pagination.users'));
 
     return view('entrust-gui::users.index', compact(
       'users'
@@ -52,7 +53,11 @@ class UsersController extends Controller
 
   public function store()
   {
-    $user = $this->gateway->create($this->request);
+    try {
+      $user = $this->gateway->create($this->request);
+    } catch(ValidationException $e) {
+      return back()->withErrors($e->getErrors());
+    }
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.created'));
   
   }
@@ -71,7 +76,11 @@ class UsersController extends Controller
 
   public function update($id)
   {
-    $this->gateway->update($this->request, $id);
+    try {
+      $this->gateway->update($this->request, $id);
+    } catch(ValidationException $e) {
+      return back()->withErrors($e->getErrors());
+    }
     return redirect(route('entrust-gui::users.index'))->withSuccess(trans('entrust-gui::users.updated'));
   }
 

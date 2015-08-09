@@ -1,6 +1,4 @@
-<?php
-
-namespace Acoustep\EntrustGui\Repositories;
+<?php namespace Acoustep\EntrustGui\Repositories;
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
@@ -30,4 +28,5 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $this->pushCriteria( app(RequestCriteria::class) );
     }
+
 }
