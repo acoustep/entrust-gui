@@ -6,5 +6,6 @@ return [
     "users" => 5,
     "roles" => 5,
     "permissions" => 5,
-  ]
+  ],
+  "middleware" => 'auth'
 ];

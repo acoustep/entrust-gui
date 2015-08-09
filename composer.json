@@ -1,7 +1,8 @@
 {
     "name": "acoustep/entrust-gui",
     "description": "A GUI for the Entrust package.",
-    "keywords": ["laravel","illuminate","auth","roles","acl","permission", "gui"],
+    "keywords": ["laravel","illuminate","auth","roles","acl","permission","gui"],
+    "homepage": "https://github.com/acoustep/entrust-gui",
     "license": "MIT",
     "authors": [
         {

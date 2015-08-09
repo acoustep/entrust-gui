@@ -1,10 +1,12 @@
 # Entrust GUI
 
-*This package is in very early development*
+*This package is in very early development - breaking changes are imminent*
+
+![User Panel Preview](http://i.imgur.com/9RJ3qOi.png)
 
 Entrust GUI is a Admin Interface for the Laravel Package Entrust.
 
-Entrust GUI's goal is to make administration easier with the Entrust package. It is only to handle the administration of users, roles and permissions.
+Entrust GUI's goal is to make administration of users, roles and permissions easier for the [Entrust](https://github.com/Zizaco/entrust) package.
 
 This package is currently not for handling authentication, authorisation or registration of users. 
 
@@ -19,7 +21,6 @@ To do
 ## To do
 
 * Testing
-* Gateways and Repositories
 * Configuration
 * Middleware
 * Translations

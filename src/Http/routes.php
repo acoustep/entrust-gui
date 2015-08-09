@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['prefix' => Config::get("entrust-gui.route-prefix")], function() {
+Route::group(['prefix' => Config::get("entrust-gui.route-prefix"), 'middleware' => Config::get("entrust-gui.middleware")], function() {
   Route::get('users', ['uses' => 'UsersController@index', 'as' => 'entrust-gui::users.index']);
   Route::get('users/create', ['uses' => 'UsersController@create', 'as' => 'entrust-gui::users.create']);
   Route::post('users', ['uses' => 'UsersController@store', 'as' => 'entrust-gui::users.store']);
