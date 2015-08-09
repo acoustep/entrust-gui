@@ -168,6 +168,10 @@ By default all routes are prefixed with ```/entrust-gui```.
 
 You can change this prefix by editing ```route-prefix``` in ```config/entrust-gui.php```.
 
+```
+'route-prefix' => 'admin'
+```
+
 Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```auth``` middleware.
 
 If you have not set up Laravel authentication you will see a ```NotFoundHttpException``` exception. See the Laravel [Authentication](http://laravel.com/docs/5.1/authentication) documentation for setting up the Login system in Laravel 5.1.
