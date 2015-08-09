@@ -1,6 +1,6 @@
 <?php
 return [
-  "layout" => "app",
+  "layout" => "entrust-gui::app",
   "route-prefix" => "entrust-gui",
   "pagination" => [
     "users" => 5,

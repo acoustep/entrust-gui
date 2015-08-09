@@ -1,4 +1,4 @@
-@extends('entrust-gui::app')
+@extends(Config::get('entrust-gui.layout'))
 
 @section('heading', 'Edit User')
 
