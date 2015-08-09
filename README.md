@@ -1,8 +1,9 @@
 # Entrust GUI
 
+[![Code Climate](https://codeclimate.com/github/acoustep/entrust-gui/badges/gpa.svg)](https://codeclimate.com/github/acoustep/entrust-gui)
+
 *This package is in very early development - breaking changes are imminent*
 
-![User Panel Preview](http://i.imgur.com/9RJ3qOi.png)
 
 Entrust GUI is a Admin Interface for the Laravel Package Entrust.
 
@@ -10,19 +11,185 @@ Entrust GUI's goal is to make administration of users, roles and permissions eas
 
 This package is currently not for handling authentication, authorisation or registration of users. 
 
+![User Panel Preview](http://i.imgur.com/9RJ3qOi.png)
+
 ## Installation
 
-To do
+Add the package to your composer.json file
+
+```
+"acoustep/entrust-gui": "dev-master"
+```
+
+Add the service provider to your config.app file
+
+```
+Acoustep\EntrustGui\EntrustGuiServiceProvider::class,
+```
+
+Add the Entrust Alias to your config.app file as well.
+
+```
+'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
+```
+
+Publish the configuration file
+
+```
+php artisan vendor:publish
+```
+
+If you haven't already set up Entrust then make the migration file and run the migration.
+
+```
+php artisan entrust:migration
+php artisan migrate
+```
+
+Entrust-GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models. Here are User, Role and Permission models to get your started.
+
+### app/User.php
+
+```
+<?php
+
+namespace App;
+
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Watson\Validating\ValidatingTrait;
+use Hash;
+
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+{
+    use Authenticatable, CanResetPassword, ValidatingTrait;
+
+    protected $throwValidationExceptions = true;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email', 'password'];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
+
+    public function roles()
+    {
+      return $this->belongsToMany('App\Role');
+    }
+
+    protected $rules = [
+      'email'      => 'required|email|unique:users',
+      'password'   => 'required',
+    ];
+
+}
+```
+
+### app/Role.php
+
+```
+<?php namespace App;
+
+use Zizaco\Entrust\EntrustRole;
+use Watson\Validating\ValidatingTrait;
+
+class Role extends EntrustRole
+{
+  use ValidatingTrait;
+
+  protected $throwValidationExceptions = true;
+
+  protected $fillable = [
+    'name',
+    'display_name',
+    'description',
+  ];
+
+  protected $rules = [
+    'name'      => 'required|unique:roles',
+  ];
+}
+```
+
+### app/Permission.php
+
+```
+<?php namespace App;
+
+use Zizaco\Entrust\EntrustPermission;
+use Watson\Validating\ValidatingTrait;
+
+class Permission extends EntrustPermission
+{
+  use ValidatingTrait;
+
+  protected $fillable = [
+    'name',
+    'display_name',
+    'description',
+  ];
+
+  protected $rules = [
+    'name'      => 'required|unique:permissions',
+  ];
+}
+```
+
+At this point you're all good to go. See Getting Started for how to use the package.
 
 ## Getting Started
 
-To do
+### Accessing Entrust GUI
+
+By default all routes are prefixed with /entrust-gui.
+
+Users: /entrust-gui/users
+Roles: /entrust-gui/roles
+Permissions: /entrust-gui/permissions
+
+You can change this prefix by editing route-prefix in config/entrust-gui.php.
+
+Note that by default Entrust GUI uses the auth middleware. Pointing your app to /entrust-gui/users will redirect you to /auth/login if you are not logged in and using the default auth middleware.
+
+If you have not set up Laravel authentication you will see a NotFoundHttpException. See the Laravel [Authentication](http://laravel.com/docs/5.1/authentication) documentation for setting up the Login system in Laravel 5.1.
+
+
+### Middleware
+
+By default Entrust GUI uses auth for middleware. This is important to know as any logged in user will have access to it.
+
+You can change the middleware in config/entrust-gui.php in the middleware setting.
+
+If you wish to test out the system without middleware then go to config/entrust-gui.php and set middleware to null.
+
+```
+'middleware' => null,
+```
 
 ## To do
 
+* Middleware example for administrators
 * Testing
 * Configuration
-* Middleware
+* Advanced middleware configuration
 * Translations
 * Validation
 * Events
