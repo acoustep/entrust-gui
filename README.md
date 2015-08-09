@@ -166,7 +166,7 @@ By default all routes are prefixed with ```/entrust-gui```.
 * Roles: ```/entrust-gui/roles```
 * Permissions: ```/entrust-gui/permissions```
 
-You can change this prefix by editing r```oute-prefix``` in ```config/entrust-gui.php```.
+You can change this prefix by editing ```route-prefix``` in ```config/entrust-gui.php```.
 
 Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```auth``` middleware.
 
