@@ -47,7 +47,7 @@ php artisan migrate
 
 Entrust-GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models.
 
-Here are User, Role and Permission models to get your started.
+Here are ```User```, ```Role``` and ```Permission``` models to get your started.
 
 ### app/User.php
 
@@ -160,13 +160,13 @@ At this point you're all good to go. See Getting Started for how to use the pack
 
 ### Accessing Entrust GUI
 
-By default all routes are prefixed with /entrust-gui.
+By default all routes are prefixed with ```/entrust-gui```.
 
-Users: /entrust-gui/users
-Roles: /entrust-gui/roles
-Permissions: /entrust-gui/permissions
+* Users: ```/entrust-gui/users```
+* Roles: ```/entrust-gui/roles```
+* Permissions: ```/entrust-gui/permissions```
 
-You can change this prefix by editing route-prefix in ```config/entrust-gui.php```.
+You can change this prefix by editing r```oute-prefix``` in ```config/entrust-gui.php```.
 
 Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```auth``` middleware.
 
