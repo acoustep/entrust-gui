@@ -62,11 +62,11 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Watson\Validating\ValidatingTrait;
-use Hash;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-    use Authenticatable, CanResetPassword, ValidatingTrait;
+    use Authenticatable, CanResetPassword, ValidatingTrait, EntrustUserTrait;
 
     protected $throwValidationExceptions = true;
 
@@ -90,11 +90,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
-
-    public function roles()
-    {
-      return $this->belongsToMany('App\Role');
-    }
 
     protected $rules = [
       'email'      => 'required|email|unique:users',
