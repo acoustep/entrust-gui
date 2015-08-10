@@ -26,12 +26,12 @@ class EntrustGuiServiceProvider extends ServiceProvider{
     $this->loadTranslationsFrom(realpath(__DIR__.'/../translations'), 'entrust-gui');
 
 
-		// this  for conig
+		// this is for conig
     $this->publishes([
       __DIR__.'/../config/entrust-gui.php' => config_path('entrust-gui.php'),
     ], 'config');
 
-		// this  for conig
+		// this is for views
     $this->publishes([
       __DIR__.'/../views' => base_path('resources/views/vendor/entrust-gui'),
     ], 'views');

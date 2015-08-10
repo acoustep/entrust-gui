@@ -222,9 +222,18 @@ Each template yields to ```heading``` and ```content``` so make sure your new la
 </html>
 ```
 
+### Editing Templates
+
+To edit the template files you first need to publish them
+
+```
+php artisan vendor:publish --tag="views"
+```
+
+All files are then stored in the ```resources/views/vendor/entrust-gui``` directory.
+
 ## To do
 
-* Middleware example for administrators
 * Testing
 * Configuration
 * Advanced middleware configuration
