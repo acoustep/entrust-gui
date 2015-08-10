@@ -35,7 +35,7 @@ Add the Entrust Alias to your ```config/app.php``` file as well.
 Publish the configuration file(s)
 
 ```
-php artisan vendor:publish
+php artisan vendor:publish --tag="config"
 ```
 
 If you haven't already set up Entrust then make the migration file and run the migration.
