@@ -45,7 +45,7 @@ php artisan entrust:migration
 php artisan migrate
 ```
 
-Entrust-GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models.
+Entrust GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models.
 
 Here are ```User```, ```Role``` and ```Permission``` models to get your started.
 
@@ -154,6 +154,15 @@ class Permission extends EntrustPermission
 }
 ```
 
+Add the Entrust GUI middleware to ```app\Http\Kernal.php```. This middleware will allow users with the ```admin``` role to access Entrust GUI and deny other users.
+
+```
+protected $routeMiddleware = [
+  'entrust-gui.admin' => \Acoustep\EntrustGui\Http\Middleware\AdminAuth::class,
+];
+
+```
+
 At this point you're all good to go. See Getting Started for how to use the package.
 
 ## Getting Started
@@ -178,7 +187,7 @@ If you have not set up Laravel authentication you will see a ```NotFoundHttpExce
 
 ### Middleware
 
-By default Entrust GUI uses ```auth``` for middleware. This is important to know as any logged in user will have access to it.
+By default Entrust GUI uses ```entrust-gui.admin``` for middleware. This allows logged in users with the ```admin``` role to access it.
 
 You can change the middleware in ```config/entrust-gui.php``` in the middleware setting.
 
@@ -186,6 +195,12 @@ If you wish to test out the system without middleware then go to ```config/entru
 
 ```
 'middleware' => null,
+```
+
+If you want to change the name of the role that has access to Entrust GUI, update ```middleware-role``` in the configuration file.
+
+```
+"middleware-role" => 'sudo-admin',
 ```
 
 ### Layout
