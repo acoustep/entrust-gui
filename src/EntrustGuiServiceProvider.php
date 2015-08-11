@@ -63,6 +63,7 @@ class EntrustGuiServiceProvider extends ServiceProvider{
     $this->app->register('Prettus\Repository\Providers\RepositoryServiceProvider');
     $this->app->bind('Acoustep\EntrustGui\Repositories\UserRepository','Acoustep\EntrustGui\Repositories\UserRepositoryEloquent');
     $this->app->bind('Acoustep\EntrustGui\Repositories\RoleRepository','Acoustep\EntrustGui\Repositories\RoleRepositoryEloquent');
+    $this->app->bind('Acoustep\EntrustGui\Repositories\PermissionRepository','Acoustep\EntrustGui\Repositories\PermissionRepositoryEloquent');
   }
 }
 
