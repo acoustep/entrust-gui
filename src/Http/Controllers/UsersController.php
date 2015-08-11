@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\UserGateway;
 use Illuminate\Http\Request;
 use Watson\Validating\ValidationException;
-use Config;
+use Illuminate\Config\Repository as Config;
 
 class UsersController extends Controller
 {
@@ -17,12 +17,15 @@ class UsersController extends Controller
   protected $gateway;
   protected $request;
   protected $role;
+  protected $config;
 
-  public function __construct(Request $request, UserGateway $gateway)
+  public function __construct(Request $request, UserGateway $gateway, Config $config)
   {
+    $this->config = $config;
     $this->request = $request;
     $this->gateway = $gateway;
-    $this->role = $this->gateway->newRoleInstance();
+    $role_class = $this->config->get('entrust.role');
+    $this->role = new $role_class;
   }
 
 	/**
@@ -32,7 +35,7 @@ class UsersController extends Controller
 	 */
 	public function index()
 	{
-    $users = $this->gateway->paginate(Config::get('entrust-gui.pagination.users'));
+    $users = $this->gateway->paginate($this->config->get('entrust-gui.pagination.users'));
 
     return view('entrust-gui::users.index', compact(
       'users'
@@ -41,7 +44,8 @@ class UsersController extends Controller
 
   public function create()
   {
-    $user = $this->gateway->newUserInstance();
+    $user_class = $this->config->get('auth.model');
+    $user = new $user_class;
     $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::users.create', compact(

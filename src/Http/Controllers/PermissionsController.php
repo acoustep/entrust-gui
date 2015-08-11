@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\PermissionGateway;
 use Illuminate\Http\Request;
 use Watson\Validating\ValidationException;
-use Config;
+use Illuminate\Config\Repository as Config;
 
 
 class PermissionsController extends Controller
@@ -17,12 +17,16 @@ class PermissionsController extends Controller
 
   protected $request;
   protected $gateway;
+  protected $role;
+  protected $config;
 
-  public function __construct(Request $request, PermissionGateway $gateway)
+  public function __construct(Request $request, PermissionGateway $gateway, Config $config)
   {
+    $this->config = $config;
     $this->request = $request;
     $this->gateway = $gateway;
-    $this->role = $this->gateway->newRoleInstance();
+    $role_class = $this->config->get('entrust.role');
+    $this->role = new $role_class;
   }
 
 	/**
@@ -32,7 +36,7 @@ class PermissionsController extends Controller
 	 */
 	public function index()
 	{
-    $permissions = $this->gateway->paginate(Config::get('entrust-gui.pagination.permissions'));
+    $permissions = $this->gateway->paginate($this->config->get('entrust-gui.pagination.permissions'));
 
     return view('entrust-gui::permissions.index', compact(
       'permissions'
@@ -41,7 +45,8 @@ class PermissionsController extends Controller
 
   public function create()
   {
-    $permission = $this->gateway->newPermissionInstance();
+    $permission_class = $this->config->get('entrust.permission');
+    $permission = new $permission_class;
     $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::permissions.create', compact(

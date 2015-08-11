@@ -19,7 +19,8 @@ class UserGateway {
   {
     $this->config = $config;
     $this->user_repository = $user_repository;
-    $this->role = $this->newRoleInstance();
+    $role_class = $this->config->get('entrust.role');
+    $this->role = new $role_class;
     $this->dispatcher = $dispatcher;
   }
 
@@ -61,20 +62,6 @@ class UserGateway {
   public function paginate($take = 5)
   {
     return $this->user_repository->paginate($take);
-  }
-
-  public function newUserInstance()
-  {
-    $user_class = $this->config->get('auth.model');
-
-    return new $user_class;
-  }
-
-  public function newRoleInstance()
-  {
-    $role_class = $this->config->get('entrust.role');
-
-    return new $role_class;
   }
 
 }

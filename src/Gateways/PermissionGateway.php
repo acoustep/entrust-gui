@@ -55,21 +55,6 @@ class PermissionGateway {
     return $this->permission_repository->paginate($take);
   }
 
-  public function newPermissionInstance()
-  {
-    $permission_class = $this->config->get('entrust.permission');
-
-    return new $permission_class;
-  }
-
-  public function newRoleInstance()
-  {
-    $role_class = $this->config->get('entrust.role');
-
-    return new $role_class;
-  }
-
-
 }
 
 
