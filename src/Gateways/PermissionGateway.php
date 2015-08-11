@@ -24,19 +24,21 @@ class PermissionGateway {
   public function create($request)
   {
     $permission = $this->permission_repository->create($request->all());
+    $permission->roles()->sync($request->get('roles', []));
     $this->dispatcher->fire(new PermissionCreatedEvent($permission));
     return $permission;
   }
 
   public function find($id)
   {
-    return $this->permission_repository->find($id);
+    return $this->permission_repository->with('roles')->find($id);
   }
 
   public function update($request, $id)
   {
     $permission = $this->permission_repository->find($id);
     $permission->update($request->all());
+    $permission->roles()->sync($request->get('roles', []));
     $this->dispatcher->fire(new PermissionUpdatedEvent($permission));
     return $permission;
   }
@@ -59,6 +61,14 @@ class PermissionGateway {
 
     return new $permission_class;
   }
+
+  public function newRoleInstance()
+  {
+    $role_class = $this->config->get('entrust.role');
+
+    return new $role_class;
+  }
+
 
 }
 

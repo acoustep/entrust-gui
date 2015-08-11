@@ -22,6 +22,7 @@ class PermissionsController extends Controller
   {
     $this->request = $request;
     $this->gateway = $gateway;
+    $this->role = $this->gateway->newRoleInstance();
   }
 
 	/**
@@ -41,9 +42,11 @@ class PermissionsController extends Controller
   public function create()
   {
     $permission = $this->gateway->newPermissionInstance();
+    $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::permissions.create', compact(
-      'permission'
+      'permission',
+      'roles'
     ));
   }
 
@@ -60,9 +63,11 @@ class PermissionsController extends Controller
   public function edit($id)
   {
     $permission = $this->gateway->find($id);
+    $roles = $this->role->lists('name', 'id');
 
     return view('entrust-gui::permissions.edit', compact(
-      'permission'
+      'permission',
+      'roles'
     ));
   }
 

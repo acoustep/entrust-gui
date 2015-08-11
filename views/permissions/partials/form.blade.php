@@ -11,3 +11,11 @@
   <label for="description">Description</label>
   <input type="input" class="form-control" id="description" placeholder="Description" name="description" value="{{ $permission->description }}">
 </div>
+<div class="form-group">
+  <label for="roles">Roles</label>
+  <select name="roles[]" multiple class="form-control">
+    @foreach($roles as $index => $role)
+      <option value="{{ $index }}" {{ ($permission->roles->contains('id', $index)) ? 'selected' : '' }}>{{ $role }}</option>
+    @endforeach
+  </select>
+</div>
