@@ -17,11 +17,13 @@ class RolesController extends Controller
 
   protected $request;
   protected $gateway;
+  protected $permission;
 
   public function __construct(Request $request, RoleGateway $gateway)
   {
     $this->request = $request;
     $this->gateway = $gateway;
+    $this->permission = $this->gateway->newPermissionInstance();
   }
 
 	/**
@@ -41,9 +43,11 @@ class RolesController extends Controller
   public function create()
   {
     $role = $this->gateway->newRoleInstance();
+    $permissions = $this->permission->lists('name', 'id');
 
     return view('entrust-gui::roles.create', compact(
-      'role'
+      'role',
+      'permissions'
     ));
   }
 
@@ -60,9 +64,11 @@ class RolesController extends Controller
   public function edit($id)
   {
     $role = $this->gateway->find($id);
+    $permissions = $this->permission->lists('name', 'id');
 
     return view('entrust-gui::roles.edit', compact(
-      'role'
+      'role',
+      'permissions'
     ));
   }
 
