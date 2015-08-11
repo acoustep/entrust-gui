@@ -232,6 +232,75 @@ php artisan vendor:publish --tag="views"
 
 All files are then stored in the ```resources/views/vendor/entrust-gui``` directory.
 
+### Events
+
+The following event classes are available:
+
+* ```UserCreatedEvent```, ```UserDeletedEvent```, ```UserUpdatedEvent```.
+* ```RoleCreatedEvent```, ```RoleDeletedEvent```, ```RoleUpdatedEvent```.
+
+#### Example Event Listener
+
+```
+<?php
+
+namespace App\Listeners;
+
+use Acoustep\EntrustGui\Events\UserCreatedEvent;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Log;
+
+class UserCreatedListener
+{
+    /**
+     * Create the event listener.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        //
+    }
+
+    /**
+     * Handle the event.
+     *
+     * @param  UserCreatedEvent  $event
+     * @return void
+     */
+    public function handle(UserCreatedEvent $event)
+    {
+      Log::info('created: '.$event->user->email);
+    }
+}
+```
+
+Add the listeners you need to use to ```app/Providers/EventServiceProvider.php```
+
+```
+protected $listen = [
+  'Acoustep\EntrustGui\Events\UserCreatedEvent' => [
+    'App\Listeners\UserCreatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\UserUpdatedEvent' => [
+    'App\Listeners\UserUpdatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\UserDeletedEvent' => [
+    'App\Listeners\UserDeletedListener',
+  ],
+  'Acoustep\EntrustGui\Events\RoleCreatedEvent' => [
+    'App\Listeners\RoleCreatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\RoleUpdatedEvent' => [
+    'App\Listeners\RoleUpdatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\RoleDeletedEvent' => [
+    'App\Listeners\RoleDeletedListener',
+  ]
+];
+```
+
 ## To do
 
 * Testing

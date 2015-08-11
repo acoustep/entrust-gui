@@ -1,20 +1,26 @@
 <?php namespace Acoustep\EntrustGui\Gateways;
 
+use Acoustep\EntrustGui\Repositories\UserRepository;
+use Acoustep\EntrustGui\Events\UserCreatedEvent;
+use Acoustep\EntrustGui\Events\UserUpdatedEvent;
+use Acoustep\EntrustGui\Events\UserDeletedEvent;
 use Hash;
 use Illuminate\Config\Repository as Config;
-use Acoustep\EntrustGui\Repositories\UserRepository;
+use Illuminate\Events\Dispatcher;
 
 class UserGateway {
 
   protected $user_repository;
   protected $role;
   protected $config;
+  protected $dispatcher;
 
-  public function __construct(Config $config, UserRepository $user_repository)
+  public function __construct(Config $config, UserRepository $user_repository, Dispatcher $dispatcher)
   {
     $this->config = $config;
     $this->user_repository = $user_repository;
     $this->role = $this->newRoleInstance();
+    $this->dispatcher = $dispatcher;
   }
 
   public function create($request)
@@ -23,6 +29,8 @@ class UserGateway {
     $data['password'] = ($request->get('password', false)) ? Hash::make($request->get('password', '')) : '';
     $user = $this->user_repository->create($data);
     $user->roles()->sync($request->get('roles', []));
+
+    $this->dispatcher->fire(new UserCreatedEvent($user));
     return $user;
   }
 
@@ -39,12 +47,15 @@ class UserGateway {
     }
     $user = $this->user_repository->update($data, $id);
     $user->roles()->sync($request->get('roles', []));
+    $this->dispatcher->fire(new UserUpdatedEvent($user));
     return $user;
   }
 
   public function delete($id)
   {
+    $user = $this->user_repository->with('roles')->find($id);
     $this->user_repository->delete($id);
+    $this->dispatcher->fire(new UserDeletedEvent($user));
   }
 
   public function paginate($take = 5)
