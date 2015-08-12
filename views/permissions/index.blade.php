@@ -3,7 +3,7 @@
 @section('heading', 'Permissions')
 
 @section('content')
-<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::permissions.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create Permission</a>
+  <a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::permissions.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>Create Permission</a>
 <table class="table table-striped">
   <tr>
     <th>Name</th>

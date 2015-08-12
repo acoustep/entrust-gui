@@ -153,6 +153,7 @@ Add the Entrust GUI middleware to ```app\Http\Kernal.php```. This middleware wil
 
 ```
 protected $routeMiddleware = [
+  // ...
   'entrust-gui.admin' => \Acoustep\EntrustGui\Http\Middleware\AdminAuth::class,
 ];
 
@@ -238,6 +239,7 @@ The following event classes are available:
 
 * ```UserCreatedEvent```, ```UserDeletedEvent```, ```UserUpdatedEvent```.
 * ```RoleCreatedEvent```, ```RoleDeletedEvent```, ```RoleUpdatedEvent```.
+* ```PermissionCreatedEvent```, ```PermissionDeletedEvent```, ```PermissionUpdatedEvent```.
 
 #### Example Event Listener
 
@@ -276,7 +278,7 @@ class UserCreatedListener
 }
 ```
 
-Add the listeners you need to use to ```app/Providers/EventServiceProvider.php```
+Add the listeners you need to use to ```app/Providers/EventServiceProvider.php```.
 
 ```
 protected $listen = [
@@ -297,6 +299,15 @@ protected $listen = [
   ],
   'Acoustep\EntrustGui\Events\RoleDeletedEvent' => [
     'App\Listeners\RoleDeletedListener',
+  ],
+  'Acoustep\EntrustGui\Events\PermissionCreatedEvent' => [
+    'App\Listeners\PermissionCreatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\PermissionUpdatedEvent' => [
+    'App\Listeners\PermissionUpdatedListener',
+  ],
+  'Acoustep\EntrustGui\Events\PermissionDeletedEvent' => [
+    'App\Listeners\PermissionDeletedListener',
   ]
 ];
 ```
