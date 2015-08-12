@@ -4,9 +4,7 @@
 
 *This package is in very early development - breaking changes are imminent*
 
-Entrust GUI is a Admin Interface for the Laravel Package Entrust.
-
-Entrust GUI's goal is to make administration of users, roles and permissions easier for the [Entrust](https://github.com/Zizaco/entrust) package.
+Entrust GUI is a Admin Interface that makes the administration of users, roles and permissions easier for the [Entrust](https://github.com/Zizaco/entrust) package.
 
 This package is currently not for handling authentication, authorisation or registration of users. 
 
@@ -47,7 +45,7 @@ php artisan migrate
 
 Entrust GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models.
 
-Here are ```User```, ```Role``` and ```Permission``` models to get your started.
+Here are ```User```, ```Role``` and ```Permission``` models to get you started.
 
 ### app/User.php
 
@@ -149,7 +147,7 @@ class Permission extends EntrustPermission
 }
 ```
 
-Add the Entrust GUI middleware to ```app\Http\Kernal.php```. This middleware will allow users with the ```admin``` role to access Entrust GUI and deny other users.
+Add the Entrust GUI middleware to ```app\Http\Kernal.php```. This middleware will allow users with the role ```admin``` (case sensitive) to access Entrust GUI and deny other users.
 
 ```
 protected $routeMiddleware = [
@@ -177,9 +175,11 @@ You can change this prefix by editing ```route-prefix``` in ```config/entrust-gu
 'route-prefix' => 'admin'
 ```
 
-Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```auth``` middleware.
+Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```admin``` middleware.
 
 If you have not set up Laravel authentication you will see a ```NotFoundHttpException``` exception. See the Laravel [Authentication](http://laravel.com/docs/5.1/authentication) documentation for setting up the Login system in Laravel 5.1.
+
+If your account does not have the role ```admin``` you will see an unauthorized request page. You can set this in the database or temporarily switch the middleware to ```null``` or ```auth``` to give yourself access to Entrust GUI and configure your roles from within the GUI.
 
 ### Middleware
 
@@ -193,7 +193,7 @@ If you wish to test out the system without middleware then go to ```config/entru
 'middleware' => null,
 ```
 
-If you want to change the name of the role that has access to Entrust GUI, update ```middleware-role``` in the configuration file.
+If you want to change the name of the role that has access to the ```admin``` middleware, update ```middleware-role``` in the configuration file.
 
 ```
 "middleware-role" => 'sudo-admin',
@@ -201,7 +201,7 @@ If you want to change the name of the role that has access to Entrust GUI, updat
 
 ### Layout
 
-If you wish to use your own layout then override the ```layout``` key in ```config/entrust-gui.php``` with the template you wish to use.
+To use your own layout override the ```layout``` key in ```config/entrust-gui.php``` with the template you wish to use.
 
 ```
 "layout" => "app", // located in views/app.blade.php
@@ -315,9 +315,6 @@ protected $listen = [
 ## To do
 
 * Testing
-* Configuration
 * Advanced middleware configuration
 * Translations
-* Validation
-* Events
-* Permissions GUI
+* Document code
