@@ -28,8 +28,6 @@ class PermissionRepositoryEloquent extends BaseRepository implements PermissionR
      */
     public function boot()
     {
-        $this->pushCriteria( app(RequestCriteria::class) );
+        $this->pushCriteria(app(RequestCriteria::class));
     }
 }
-
-

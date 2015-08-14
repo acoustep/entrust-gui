@@ -3,4 +3,3 @@
   'destroyed' => 'You have successfully removed a permission.',
   'updated' => 'You have successfully updated a permission.',
 ];
-

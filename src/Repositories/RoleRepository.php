@@ -12,4 +12,3 @@ interface RoleRepository extends RepositoryInterface
 {
     //
 }
-

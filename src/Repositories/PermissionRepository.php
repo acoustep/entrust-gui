@@ -12,5 +12,3 @@ interface PermissionRepository extends RepositoryInterface
 {
     //
 }
-
-
