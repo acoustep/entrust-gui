@@ -312,6 +312,17 @@ protected $listen = [
 ];
 ```
 
+### Editing Translations
+
+Run the publish translation command
+
+```
+php artisan vendor:publish --tag="translations"
+```
+
+Translations are then published to ```resources/lang/vendor/entrust-gui```.
+
+
 ## To do
 
 * Testing
