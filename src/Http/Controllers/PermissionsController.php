@@ -122,6 +122,7 @@ class PermissionsController extends Controller
      * PUT /permissions/{id}
      *
      * @param int $id
+     *
      * @return Response
      */
     public function update($id)
@@ -132,7 +133,7 @@ class PermissionsController extends Controller
             return back()->withErrors($e->getErrors());
         }
         return redirect(route('entrust-gui::permissions.index'))
-          ->withSuccess(trans('entrust-gui::permissions.updated'));
+            ->withSuccess(trans('entrust-gui::permissions.updated'));
     }
 
     /**
@@ -147,6 +148,6 @@ class PermissionsController extends Controller
     {
         $this->gateway->delete($id);
         return redirect(route('entrust-gui::permissions.index'))
-          ->withSuccess(trans('entrust-gui::permissions.destroyed'));
+            ->withSuccess(trans('entrust-gui::permissions.destroyed'));
     }
 }

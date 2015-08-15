@@ -1,17 +1,18 @@
 <?php namespace Acoustep\EntrustGui\Http\Controllers;
 
-/**
- *
- * @author Mitch Stanley <acoustep+entrustgui@fastmail.co.uk>
- */
-
-
 use App\Http\Controllers\Controller;
 use Acoustep\EntrustGui\Gateways\RoleGateway;
 use Illuminate\Http\Request;
 use Watson\Validating\ValidationException;
 use Illuminate\Config\Repository as Config;
 
+/**
+ * This file is part of Entrust GUI,
+ * A Laravel 5 GUI for Entrust.
+ *
+ * @license MIT
+ * @package Acoustep\EntrustGui
+ */
 class RolesController extends Controller
 {
 
@@ -20,6 +21,15 @@ class RolesController extends Controller
     protected $permission;
     protected $config;
 
+    /**
+     * Create a new RolesController instance.
+     *
+     * @param Request $request
+     * @param PermissionGateway $gateway
+     * @param Config $config
+     *
+     * @return void
+     */
     public function __construct(Request $request, RoleGateway $gateway, Config $config)
     {
         $this->config = $config;
@@ -30,7 +40,8 @@ class RolesController extends Controller
     }
 
     /**
-     * Show the application welcome screen to the role.
+     * Display a listing of the resource.
+     * GET /roles
      *
      * @return Response
      */
@@ -43,6 +54,12 @@ class RolesController extends Controller
         ));
     }
 
+    /**
+     * Show the form for creating a new resource.
+     * GET /roles/create
+     *
+     * @return Response
+     */
     public function create()
     {
         $role_class = $this->config->get('entrust.role');
@@ -55,6 +72,12 @@ class RolesController extends Controller
         ));
     }
 
+    /**
+     * Store a newly created resource in storage.
+     * POST /roles
+     *
+     * @return Response
+     */
     public function store()
     {
         try {
@@ -65,6 +88,14 @@ class RolesController extends Controller
         return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.created'));
     }
 
+    /**
+     * Show the form for editing the specified resource.
+     * GET /roles/{id}/edit
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
     public function edit($id)
     {
         $role = $this->gateway->find($id);
@@ -76,6 +107,14 @@ class RolesController extends Controller
         ));
     }
 
+    /**
+     * Update the specified resource in storage.
+     * PUT /roles/{id}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
     public function update($id)
     {
         try {
@@ -86,6 +125,14 @@ class RolesController extends Controller
         return redirect(route('entrust-gui::roles.index'))->withSuccess(trans('entrust-gui::roles.updated'));
     }
   
+    /**
+     * Remove the specified resource from storage.
+     * DELETE /roles/{id}
+     *
+     * @param int $id
+     *
+     * @return Response
+     */
     public function destroy($id)
     {
         $this->gateway->delete($id);

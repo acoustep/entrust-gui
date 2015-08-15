@@ -6,8 +6,11 @@ use App\Entities\User;
 use Config;
 
 /**
- * Class UserRepositoryEloquent
- * @package namespace App\Repositories;
+ * This file is part of Entrust GUI,
+ * A Laravel 5 GUI for Entrust.
+ *
+ * @license MIT
+ * @package Acoustep\EntrustGui
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
