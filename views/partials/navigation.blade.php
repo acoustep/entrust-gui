@@ -14,7 +14,7 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="{{ (Request::is('*users*') ? 'active' : '') }}"><a href="{{ route('entrust-gui::users.index') }}">{{ trans('entrust-gui::navigation.users') }} <span class="sr-only">(current)</span></a></li>
+        <li class="{{ (Request::is('*users*') ? 'active' : '') }}"><a href="{{ route('entrust-gui::users.index') }}">{{ trans('entrust-gui::navigation.users') }}</a></li>
         <li class="{{ (Request::is('*roles*') ? 'active' : '') }}"><a href="{{ route('entrust-gui::roles.index') }}">{{ trans('entrust-gui::navigation.roles') }}</a></li>
         <li class="{{ (Request::is('*permissions*') ? 'active' : '') }}"><a href="{{ route('entrust-gui::permissions.index') }}">{{ trans('entrust-gui::navigation.permissions') }}</a></li>
       </ul>

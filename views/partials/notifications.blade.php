@@ -17,7 +17,7 @@
   <div class="col-xs-12">
 		<div class="alert alert-success alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<strong>Success:</strong> {{ $message }}
+			<strong>{{ trans('entrust-gui::flash.success') }}</strong> {{ $message }}
 		</div>
 		{{ Session::forget('success') }}
 	</div>
@@ -29,7 +29,7 @@
   <div class="col-xs-12">
 		<div class="alert alert-danger alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<strong>Error:</strong> {{ $message }}
+			<strong>{{ trans('entrust-gui::flash.error') }}</strong> {{ $message }}
 		</div>
 		{{ Session::forget('error') }}
 	</div>
@@ -41,7 +41,7 @@
   <div class="col-xs-12">
 		<div class="alert alert-warning alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<strong>Warning:</strong> {{ $message }}
+			<strong>{{ trans('entrust-gui::flash.warning') }}</strong> {{ $message }}
 		</div>
 		{{ Session::forget('warning') }}
 	</div>
@@ -53,7 +53,7 @@
   <div class="col-xs-12">
 		<div class="alert alert-info alert-dismissable">
 			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-			<strong>FYI:</strong> {{ $message }}
+			<strong>{{ trans('entrust-gui::flash.info') }}</strong> {{ $message }}
 		</div>
 		{{ Session::forget('info') }}
 	</div>
