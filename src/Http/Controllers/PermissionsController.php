@@ -25,9 +25,6 @@ class PermissionsController extends ManyToManyController
      * @return void
      */
     public function __construct(Request $request, Config $config, PermissionGateway $model) {
-        $relation = 'role';
-        $resource = 'permissions';
-        $short_relation_name = 'roles';
-        parent::__construct($request, $config, $model, $resource, $relation, $short_relation_name);
+        parent::__construct($request, $config, $model, 'permissions', 'role');
     }
 }

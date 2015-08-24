@@ -19,15 +19,12 @@ class RolesController extends ManyToManyController
      * Create a new RolesController instance.
      *
      * @param Request $request
-     * @param PermissionGateway $gateway
+     * @param RoleGateway $gateway
      * @param Config $config
      *
      * @return void
      */
     public function __construct(Request $request, Config $config, RoleGateway $model) {
-        $relation = 'permission';
-        $resource = 'roles';
-        $short_relation_name = 'perms';
-        parent::__construct($request, $config, $model, $resource, $relation, $short_relation_name);
+        parent::__construct($request, $config, $model, 'roles', 'permission');
     }
 }
