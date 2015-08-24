@@ -22,7 +22,6 @@ abstract class ManyToManyController extends Controller
     protected $config;
     protected $resource;
     protected $relation_name;
-    protected $short_relation_name;
 
     /**
      * Create a new ManyToManyController instance.
@@ -33,7 +32,7 @@ abstract class ManyToManyController extends Controller
      *
      * @return void
      */
-    public function __construct(Request $request, Config $config, $gateway, $resource, $relation, $short_relation_name)
+    public function __construct(Request $request, Config $config, $gateway, $resource, $relation)
     {
         $this->config = $config;
         $this->request = $request;
@@ -41,8 +40,6 @@ abstract class ManyToManyController extends Controller
         $relation_class = $this->config->get('entrust.'.$relation);
         $this->relation = new $relation_class;
         $this->resource = $resource;
-        $this->relation_name = "{$relation}";
-        $this->short_relation_name = $short_relation_name;
     }
 
     /**
@@ -54,11 +51,9 @@ abstract class ManyToManyController extends Controller
     public function index()
     {
         $models = $this->gateway->paginate($this->config->get('entrust-gui.pagination.'.$this->resource));
-        $resource = $this->resource;
 
         return view('entrust-gui::'.$this->resource.'.index', compact(
-            "models",
-            "resource"
+            "models"
         ));
     }
 
@@ -72,17 +67,11 @@ abstract class ManyToManyController extends Controller
     {
         $model_class = $this->config->get('entrust.'.str_singular($this->resource));
         $model = new $model_class;
-        $resource = $this->resource;
         $relations = $this->relation->lists('name', 'id');
-        $relation_name = $this->relation_name;
-        $short_relation_name = $this->short_relation_name;
 
         return view('entrust-gui::'.$this->resource.'.create', compact(
             'model',
-            'resource',
-            'relation_name',
-            'relations',
-            'short_relation_name'
+            'relations'
         ));
     }
 
@@ -113,17 +102,11 @@ abstract class ManyToManyController extends Controller
     public function edit($id)
     {
         $model = $this->gateway->find($id);
-        $resource = $this->resource;
         $relations = $this->relation->lists('name', 'id');
-        $relation_name = $this->relation_name;
-        $short_relation_name = $this->short_relation_name;
 
         return view('entrust-gui::'.$this->resource.'.edit', compact(
             'model',
-            'resource',
-            'relation_name',
-            'relations',
-            'short_relation_name'
+            'relations'
         ));
     }
 

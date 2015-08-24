@@ -12,10 +12,10 @@
   <input type="input" class="form-control" id="description" placeholder="Description" name="description" value="{{ $model->description }}">
 </div>
 <div class="form-group">
-  <label for="{{str_plural($relation_name) }}">{{ ucwords(str_plural($relation_name))}}</label>
-  <select name="{{str_plural($relation_name) }}[]" multiple class="form-control">
+  <label for="permissions">Permissions</label>
+  <select name="permissions[]" multiple class="form-control">
     @foreach($relations as $index => $relation)
-      <option value="{{ $index }}" {{ ($model->{$short_relation_name}->contains('id', $index)) ? 'selected' : '' }}>{{ $relation }}</option>
+      <option value="{{ $index }}" {{ ($model->perms->contains('id', $index)) ? 'selected' : '' }}>{{ $relation }}</option>
     @endforeach
   </select>
 </div>

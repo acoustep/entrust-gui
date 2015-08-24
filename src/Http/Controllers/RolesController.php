@@ -15,6 +15,15 @@ use Watson\Validating\ValidationException;
  */
 class RolesController extends ManyToManyController
 {
+    /**
+     * Create a new RolesController instance.
+     *
+     * @param Request $request
+     * @param PermissionGateway $gateway
+     * @param Config $config
+     *
+     * @return void
+     */
     public function __construct(Request $request, Config $config, RoleGateway $model) {
         $relation = 'permission';
         $resource = 'roles';
