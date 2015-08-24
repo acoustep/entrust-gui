@@ -4,7 +4,6 @@ use Acoustep\EntrustGui\Repositories\RoleRepository;
 use Acoustep\EntrustGui\Events\RoleCreatedEvent;
 use Acoustep\EntrustGui\Events\RoleUpdatedEvent;
 use Acoustep\EntrustGui\Events\RoleDeletedEvent;
-use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -15,14 +14,9 @@ use Illuminate\Events\Dispatcher;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class RoleGateway
+class RoleGateway extends ManyToManyGateway
 {
 
-    use PaginationGatewayTrait;
-
-    protected $repository;
-    protected $config;
-    protected $dispatcher;
     /**
      * Create a new gateway instance.
      *

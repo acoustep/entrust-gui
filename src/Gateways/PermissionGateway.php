@@ -4,7 +4,6 @@ use Acoustep\EntrustGui\Repositories\PermissionRepository;
 use Acoustep\EntrustGui\Events\PermissionCreatedEvent;
 use Acoustep\EntrustGui\Events\PermissionUpdatedEvent;
 use Acoustep\EntrustGui\Events\PermissionDeletedEvent;
-use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -15,14 +14,8 @@ use Illuminate\Events\Dispatcher;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class PermissionGateway
+class PermissionGateway extends ManyToManyGateway
 {
-
-    use PaginationGatewayTrait;
-
-    protected $repository;
-    protected $config;
-    protected $dispatcher;
 
     /**
      * Create a new gateway instance.
