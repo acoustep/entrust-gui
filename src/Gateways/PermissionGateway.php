@@ -4,6 +4,7 @@ use Acoustep\EntrustGui\Repositories\PermissionRepository;
 use Acoustep\EntrustGui\Events\PermissionCreatedEvent;
 use Acoustep\EntrustGui\Events\PermissionUpdatedEvent;
 use Acoustep\EntrustGui\Events\PermissionDeletedEvent;
+use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -17,7 +18,9 @@ use Illuminate\Events\Dispatcher;
 class PermissionGateway
 {
 
-    protected $permission_repository;
+    use PaginationGatewayTrait;
+
+    protected $repository;
     protected $config;
     protected $dispatcher;
 
@@ -25,15 +28,15 @@ class PermissionGateway
      * Create a new gateway instance.
      *
      * @param Config $config
-     * @param PermissionRepository $permission_repository
+     * @param PermissionRepository $repository
      * @param Dispatcher $dispatcher
      *
      * @return void
      */
-    public function __construct(Config $config, PermissionRepository $permission_repository, Dispatcher $dispatcher)
+    public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher)
     {
         $this->config = $config;
-        $this->permission_repository = $permission_repository;
+        $this->repository = $repository;
         $this->dispatcher = $dispatcher;
     }
 
@@ -46,7 +49,7 @@ class PermissionGateway
      */
     public function create($request)
     {
-        $permission = $this->permission_repository->create($request->all());
+        $permission = $this->repository->create($request->all());
         $permission->roles()->sync($request->get('roles', []));
         $this->dispatcher->fire(new PermissionCreatedEvent($permission));
         return $permission;
@@ -61,7 +64,7 @@ class PermissionGateway
      */
     public function find($id)
     {
-        return $this->permission_repository->with('roles')->find($id);
+        return $this->repository->with('roles')->find($id);
     }
 
     /**
@@ -74,7 +77,7 @@ class PermissionGateway
      */
     public function update($request, $id)
     {
-        $permission = $this->permission_repository->find($id);
+        $permission = $this->repository->find($id);
         $permission->update($request->all());
         $permission->roles()->sync($request->get('roles', []));
         $this->dispatcher->fire(new PermissionUpdatedEvent($permission));
@@ -90,20 +93,9 @@ class PermissionGateway
      */
     public function delete($id)
     {
-        $permission = $this->permission_repository->find($id);
-        $this->permission_repository->delete($id);
+        $permission = $this->repository->find($id);
+        $this->repository->delete($id);
         $this->dispatcher->fire(new PermissionDeletedEvent($permission));
     }
 
-    /**
-     * Paginate permissions
-     *
-     * @param integer $take
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    public function paginate($take = 5)
-    {
-        return $this->permission_repository->paginate($take);
-    }
 }

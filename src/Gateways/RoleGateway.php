@@ -4,6 +4,7 @@ use Acoustep\EntrustGui\Repositories\RoleRepository;
 use Acoustep\EntrustGui\Events\RoleCreatedEvent;
 use Acoustep\EntrustGui\Events\RoleUpdatedEvent;
 use Acoustep\EntrustGui\Events\RoleDeletedEvent;
+use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -17,22 +18,24 @@ use Illuminate\Events\Dispatcher;
 class RoleGateway
 {
 
-    protected $role_repository;
+    use PaginationGatewayTrait;
+
+    protected $repository;
     protected $config;
     protected $dispatcher;
     /**
      * Create a new gateway instance.
      *
      * @param Config $config
-     * @param RoleRepository $role_repository
+     * @param RoleRepository $repository
      * @param Dispatcher $dispatcher
      *
      * @return void
      */
-    public function __construct(Config $config, RoleRepository $role_repository, Dispatcher $dispatcher)
+    public function __construct(Config $config, RoleRepository $repository, Dispatcher $dispatcher)
     {
         $this->config = $config;
-        $this->role_repository = $role_repository;
+        $this->repository = $repository;
         $this->dispatcher = $dispatcher;
     }
 
@@ -45,7 +48,7 @@ class RoleGateway
      */
     public function create($request)
     {
-        $role = $this->role_repository->create($request->all());
+        $role = $this->repository->create($request->all());
         $role->perms()->sync($request->get('permissions', []));
         $this->dispatcher->fire(new RoleCreatedEvent($role));
         return $role;
@@ -60,7 +63,7 @@ class RoleGateway
      */
     public function find($id)
     {
-        return $this->role_repository->with('perms')->find($id);
+        return $this->repository->with('perms')->find($id);
     }
 
     /**
@@ -73,7 +76,7 @@ class RoleGateway
      */
     public function update($request, $id)
     {
-        $role = $this->role_repository->find($id);
+        $role = $this->repository->find($id);
         $role->update($request->all());
         $role->perms()->sync($request->get('permissions', []));
         $this->dispatcher->fire(new RoleUpdatedEvent($role));
@@ -89,20 +92,9 @@ class RoleGateway
      */
     public function delete($id)
     {
-        $role = $this->role_repository->find($id);
-        $this->role_repository->delete($id);
+        $role = $this->repository->find($id);
+        $this->repository->delete($id);
         $this->dispatcher->fire(new RoleDeletedEvent($role));
     }
 
-    /**
-     * Paginate roles
-     *
-     * @param integer $take
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    public function paginate($take = 5)
-    {
-        return $this->role_repository->paginate($take);
-    }
 }

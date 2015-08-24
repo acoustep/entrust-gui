@@ -4,6 +4,7 @@ use Acoustep\EntrustGui\Repositories\UserRepository;
 use Acoustep\EntrustGui\Events\UserCreatedEvent;
 use Acoustep\EntrustGui\Events\UserUpdatedEvent;
 use Acoustep\EntrustGui\Events\UserDeletedEvent;
+use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
@@ -18,7 +19,9 @@ use Illuminate\Events\Dispatcher;
 class UserGateway
 {
 
-    protected $user_repository;
+    use PaginationGatewayTrait;
+
+    protected $repository;
     protected $role;
     protected $config;
     protected $dispatcher;
@@ -34,10 +37,10 @@ class UserGateway
      *
      * @return void
      */
-    public function __construct(Config $config, UserRepository $user_repository, Dispatcher $dispatcher, Hasher $hash)
+    public function __construct(Config $config, UserRepository $repository, Dispatcher $dispatcher, Hasher $hash)
     {
         $this->config = $config;
-        $this->user_repository = $user_repository;
+        $this->repository = $repository;
         $role_class = $this->config->get('entrust.role');
         $this->role = new $role_class;
         $this->dispatcher = $dispatcher;
@@ -55,7 +58,7 @@ class UserGateway
     {
         $data = $request->except('password');
         $data['password'] = ($request->get('password', false)) ? $this->hash->make($request->get('password', '')) : '';
-        $user = $this->user_repository->create($data);
+        $user = $this->repository->create($data);
         $user->roles()->sync($request->get('roles', []));
 
         $this->dispatcher->fire(new UserCreatedEvent($user));
@@ -71,7 +74,7 @@ class UserGateway
      */
     public function find($id)
     {
-        return $this->user_repository->with('roles')->find($id);
+        return $this->repository->with('roles')->find($id);
     }
 
     /**
@@ -88,7 +91,7 @@ class UserGateway
         if ($request->get('password', false)) {
             $data['password'] = $this->hash->make($request->get('password'));
         }
-        $user = $this->user_repository->update($data, $id);
+        $user = $this->repository->update($data, $id);
         $user->roles()->sync($request->get('roles', []));
         $this->dispatcher->fire(new UserUpdatedEvent($user));
         return $user;
@@ -103,8 +106,8 @@ class UserGateway
      */
     public function delete($id)
     {
-        $user = $this->user_repository->with('roles')->find($id);
-        $this->user_repository->delete($id);
+        $user = $this->repository->with('roles')->find($id);
+        $this->repository->delete($id);
         $this->dispatcher->fire(new UserDeletedEvent($user));
     }
 
@@ -117,6 +120,6 @@ class UserGateway
      */
     public function paginate($take = 5)
     {
-        return $this->user_repository->paginate($take);
+        return $this->repository->paginate($take);
     }
 }
