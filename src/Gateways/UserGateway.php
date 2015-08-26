@@ -111,15 +111,4 @@ class UserGateway
         $this->dispatcher->fire(new UserDeletedEvent($user));
     }
 
-    /**
-     * Paginate users
-     *
-     * @param integer $take
-     *
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    public function paginate($take = 5)
-    {
-        return $this->repository->paginate($take);
-    }
 }
