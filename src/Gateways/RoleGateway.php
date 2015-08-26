@@ -1,9 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Gateways;
 
 use Acoustep\EntrustGui\Repositories\RoleRepository;
-use Acoustep\EntrustGui\Events\RoleCreatedEvent;
-use Acoustep\EntrustGui\Events\RoleUpdatedEvent;
-use Acoustep\EntrustGui\Events\RoleDeletedEvent;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -28,67 +25,7 @@ class RoleGateway extends ManyToManyGateway
      */
     public function __construct(Config $config, RoleRepository $repository, Dispatcher $dispatcher)
     {
-        $this->config = $config;
-        $this->repository = $repository;
-        $this->dispatcher = $dispatcher;
-    }
-
-    /**
-     * Create a role
-     *
-     * @param Illuminate\Http\Request $request
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function create($request)
-    {
-        $role = $this->repository->create($request->all());
-        $role->perms()->sync($request->get('permissions', []));
-        $this->dispatcher->fire(new RoleCreatedEvent($role));
-        return $role;
-    }
-
-    /**
-     * Find role by ID
-     *
-     * @param integer $id
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function find($id)
-    {
-        return $this->repository->with('perms')->find($id);
-    }
-
-    /**
-     * Update role
-     *
-     * @param Illuminate\Http\Request $request
-     * @param integer $id
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function update($request, $id)
-    {
-        $role = $this->repository->find($id);
-        $role->update($request->all());
-        $role->perms()->sync($request->get('permissions', []));
-        $this->dispatcher->fire(new RoleUpdatedEvent($role));
-        return $role;
-    }
-
-    /**
-     * Delete role
-     *
-     * @param integer $id
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        $role = $this->repository->find($id);
-        $this->repository->delete($id);
-        $this->dispatcher->fire(new RoleDeletedEvent($role));
+      parent::__construct($config, $repository, $dispatcher, 'role', 'permissions', 'perms');
     }
 
 }
