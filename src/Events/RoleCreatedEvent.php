@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class RoleCreatedEvent extends Event
+class RoleCreatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels;
@@ -23,8 +23,13 @@ class RoleCreatedEvent extends Event
      *
      * @return void
      */
-    public function __construct($role)
+    public function __construct()
     {
-        $this->role = $role;
+    }
+
+    public function setModel($model)
+    {
+        $this->role = $model;
+        return $this;
     }
 }

@@ -1,6 +1,7 @@
 <?php namespace Acoustep\EntrustGui\Gateways;
 
 use Acoustep\EntrustGui\Repositories\PermissionRepository;
+use Acoustep\EntrustGui\Events\PermissionCreatedEvent;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -23,9 +24,9 @@ class PermissionGateway extends ManyToManyGateway
      *
      * @return void
      */
-    public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher)
+    public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher, PermissionCreatedEvent $event_created_class)
     {
-      parent::__construct($config, $repository, $dispatcher, 'permission', 'roles', 'roles');
+      parent::__construct($config, $repository, $dispatcher, $event_created_class, 'permission', 'roles', 'roles');
     }
 
 }

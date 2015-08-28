@@ -13,7 +13,7 @@ extensions:
     enabled:
         - Codeception\Extension\RunFailed
 modules:
-    enabled: [Mockery]
+    enabled: [Asserts, Mockery]
     config:
         Db:
             dsn: ''

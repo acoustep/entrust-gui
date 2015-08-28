@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class PermissionCreatedEvent extends Event
+class PermissionCreatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels;
@@ -24,8 +24,13 @@ class PermissionCreatedEvent extends Event
      *
      * @return void
      */
-    public function __construct($permission)
+    public function __construct()
     {
-        $this->permission = $permission;
+    }
+
+    public function setModel($model)
+    {
+        $this->permission = $model;
+        return $this;
     }
 }
