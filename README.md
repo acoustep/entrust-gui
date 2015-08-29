@@ -1,6 +1,12 @@
 # Entrust GUI
 
 [![Code Climate](https://codeclimate.com/github/acoustep/entrust-gui/badges/gpa.svg)](https://codeclimate.com/github/acoustep/entrust-gui)
+[![Build Status](https://travis-ci.org/acoustep/entrust-gui.svg?branch=testing)](https://travis-ci.org/acoustep/entrust-gui)
+[![Dependency Status](https://www.versioneye.com/user/projects/55e1ad63c6d8f20015000384/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55e1ad63c6d8f20015000384)
+[![Latest Stable Version](https://poser.pugx.org/acoustep/entrust-gui/v/stable)](https://packagist.org/packages/acoustep/entrust-gui)
+[![Total Downloads](https://poser.pugx.org/acoustep/entrust-gui/downloads)](https://packagist.org/packages/acoustep/entrust-gui)
+[![Latest Unstable Version](https://poser.pugx.org/acoustep/entrust-gui/v/unstable)](https://packagist.org/packages/acoustep/entrust-gui)
+[![License](https://poser.pugx.org/acoustep/entrust-gui/license)](https://packagist.org/packages/acoustep/entrust-gui)
 
 *This package is in very early development - breaking changes are imminent*
 
