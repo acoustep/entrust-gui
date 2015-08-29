@@ -316,12 +316,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/database.git",
-                "reference": "2fceca49bfd061d58a0a710e03bd6b2fcd1492ca"
+                "reference": "5ba722b130090d28c57460bbac718bccf503bd70"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/database/zipball/2fceca49bfd061d58a0a710e03bd6b2fcd1492ca",
-                "reference": "2fceca49bfd061d58a0a710e03bd6b2fcd1492ca",
+                "url": "https://api.github.com/repos/illuminate/database/zipball/5ba722b130090d28c57460bbac718bccf503bd70",
+                "reference": "5ba722b130090d28c57460bbac718bccf503bd70",
                 "shasum": ""
             },
             "require": {
@@ -367,7 +367,7 @@
                 "orm",
                 "sql"
             ],
-            "time": "2015-08-26 11:34:37"
+            "time": "2015-08-28 15:51:35"
         },
         {
             "name": "illuminate/events",
@@ -866,12 +866,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Console.git",
-                "reference": "e7e676ed30c837fc442ec36274b16e8a51377249"
+                "reference": "6b92fadacd2d8be82aca84cabea076fafdcff299"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/Console/zipball/e7e676ed30c837fc442ec36274b16e8a51377249",
-                "reference": "e7e676ed30c837fc442ec36274b16e8a51377249",
+                "url": "https://api.github.com/repos/symfony/Console/zipball/6b92fadacd2d8be82aca84cabea076fafdcff299",
+                "reference": "6b92fadacd2d8be82aca84cabea076fafdcff299",
                 "shasum": ""
             },
             "require": {
@@ -915,7 +915,7 @@
             ],
             "description": "Symfony Console Component",
             "homepage": "https://symfony.com",
-            "time": "2015-08-27 06:45:45"
+            "time": "2015-08-27 21:38:40"
         },
         {
             "name": "symfony/debug",
