@@ -99,7 +99,6 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
         $this->event_updated_class->shouldReceive('setModel')
               ->with(m::any());
 
-
         $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
         $result = $tester->update($request, $id);
     }
@@ -109,6 +108,20 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
      */
     public function delete()
     {
+        $id = 1;
+        $data = $this->getData();
+
+        $this->repository->shouldReceive('find')->andReturn($data);
+        $this->repository->shouldReceive('delete')->with($id);
+
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_deleted_class->shouldReceive('setModel')
+              ->with(m::any());
+
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->delete($id);
+
     
     }
 

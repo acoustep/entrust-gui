@@ -85,7 +85,6 @@ abstract class ManyToManyGateway
     public function update($request, $id)
     {
         $model = $this->repository->update($request->all(), $id);
-        $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'UpdatedEvent';
         $this->dispatcher->fire($this->event_updated_class->setModel($model));
         return $model;
     }
@@ -101,7 +100,6 @@ abstract class ManyToManyGateway
     {
         $model = $this->repository->find($id);
         $this->repository->delete($id);
-        $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'DeletedEvent';
         $this->dispatcher->fire($this->event_deleted_class->setModel($model));
     }
 }

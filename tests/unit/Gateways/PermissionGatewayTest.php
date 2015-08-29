@@ -11,56 +11,130 @@ class PermissionGatewayTest extends \Codeception\TestCase\Test
      * @var \UnitTester
      */
     protected $tester;
+    protected $config;
+    protected $repository;
+    protected $dispatcher;
+    protected $event_created_class;
+    protected $event_updated_class;
+    protected $event_deleted_class;
 
     protected function _before()
     {
+        $this->config = m::mock('Illuminate\Config\Repository');
+        $this->repository = m::mock('Acoustep\EntrustGui\Repositories\PermissionRepository, Prettus\Repository\Eloquent\BaseRepository');
+        $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
+        $this->dispatcher->shouldReceive('dispatch');
+        $this->event_created_class = m::namedMock('Acoustep\EntrustGui\Events\PermissionCreatedEvent', 'App\Events\Event');
+        $this->event_updated_class = m::namedMock('Acoustep\EntrustGui\Events\PermissionUpdatedEvent', 'App\Events\Event');
+        $this->event_deleted_class = m::namedMock('Acoustep\EntrustGui\Events\PermissionDeletedEvent', 'App\Events\Event');
     }
 
     protected function _after()
     {
     }
 
-    // tests
-    public function testInitialisation()
+    /**
+     * @test
+     */
+    public function initialisation()
     {
-      $config = m::mock('Illuminate\Config\Repository');
-      $repository = m::mock('Acoustep\EntrustGui\Repositories\PermissionRepository, Prettus\Repository\Eloquent\BaseRepository');
-      $dispatcher = m::mock('Illuminate\Events\Dispatcher');
-      $event_created_class = m::namedMock('Acoustep\EntrustGui\Events\PermissionCreatedEvent', 'App\Events\Event');
-      $tester = new PermissionGateway($config, $repository, $dispatcher, $event_created_class);
-      $this->assertInstanceOf(PermissionGateway::class, $tester);
+        $tester = new PermissionGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $this->assertInstanceOf(PermissionGateway::class, $tester);
     }
 
-    public function testCreate()
+    /**
+     * @test
+     */
+    public function create()
     {
-      $data = [
-          'name' => 'create-user',
-          'display_name' => 'Create User',
-          'description' => 'Ability to create users',
-          'roles' => [1,2,3],
-      ];
+        $data = $this->getData();
 
-      $request = m::mock('Illuminate\Http\Request');
-      $request->shouldReceive('all')->andReturn($data);
-      $request->shouldReceive('get')->with('roles', [])->andReturn($data['roles']);
+        $request = m::mock('Illuminate\Http\Request');
+        $request->shouldReceive('all')
+            ->andReturn($data);
+        $request->shouldReceive('get')
+            ->with('roles', [])
+            ->andReturn($data['roles']);
 
-      $config = m::mock('Illuminate\Config\Repository');
-      $repository = m::mock('Acoustep\EntrustGui\Repositories\PermissionRepository, Prettus\Repository\Eloquent\BaseRepository');
-      $repository->shouldReceive('create->roles->sync')->once();
-      $dispatcher = m::mock('Illuminate\Events\Dispatcher');
-      $event_created_class = m::namedMock('Acoustep\EntrustGui\Events\PermissionCreatedEvent', 'App\Events\Event');
-      $event_created_class->shouldReceive('setModel')->with(m::any());
-      $dispatcher->shouldReceive('fire')->with(m::any());
+        $this->repository->shouldReceive('create->roles->sync')
+            ->once();
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_created_class->shouldReceive('setModel')
+              ->with(m::any());
 
-      $tester = new PermissionGateway($config, $repository, $dispatcher, $event_created_class);
-      $result = $tester->create($request);
-      $this->assertInternalType('object', $result);
+        $tester = new PermissionGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->create($request);
+        $this->assertInternalType('object', $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function find()
+    {
+        $id = 1;
+        $repository = $this->repository;
+        $repository->shouldReceive('with->find');
+        $tester = new PermissionGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->find($id);
     }
 
-    public function testCreateThrowsExceptionWhenInvalid()
+    /**
+     * @test
+     */
+    public function update()
     {
+        $data = $this->getData();
+        $id = 1;
+
+        $request = m::mock('Illuminate\Http\Request');
+        $request->shouldReceive('all')
+            ->andReturn($data);
+
+        $this->repository->shouldReceive('update')->andReturn($data);
+
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_updated_class->shouldReceive('setModel')
+              ->with(m::any());
+
+        $tester = new PermissionGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->update($request, $id);
+    }
+
+    /**
+     * @test
+     */
+    public function delete()
+    {
+        $id = 1;
+        $data = $this->getData();
+
+        $this->repository->shouldReceive('find')->andReturn($data);
+        $this->repository->shouldReceive('delete')->with($id);
+
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_deleted_class->shouldReceive('setModel')
+              ->with(m::any());
+
+        $tester = new PermissionGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->delete($id);
+
     
     }
 
-}
+    protected function getData($override = [])
+    {
+        $data = [
+            'name' => 'create-user',
+            'display_name' => 'Create User',
+            'description' => 'Ability to create a user',
+            'roles' => [1,2,3],
+        ];
 
+        return array_merge($data, $override);
+    }
+
+}
