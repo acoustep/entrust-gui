@@ -34,13 +34,15 @@ abstract class ManyToManyGateway
      *
      * @return void
      */
-    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $event_created_class, $model_name, $relation_name, $short_relation_name)
+    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class, $model_name, $relation_name, $short_relation_name)
     {
         $this->config = $config;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
         $this->model_name = $model_name;
         $this->event_created_class = $event_created_class;
+        $this->event_updated_class = $event_updated_class;
+        $this->event_deleted_class = $event_deleted_class;
         $this->relation_name = $relation_name;
         $this->short_relation_name = $short_relation_name;
     }
@@ -82,11 +84,9 @@ abstract class ManyToManyGateway
      */
     public function update($request, $id)
     {
-        $model = $this->repository->find($id);
-        $model->update($request->all());
-        $model->{$this->short_relation_name}()->sync($request->get($this->relation_name, []));
+        $model = $this->repository->update($request->all(), $id);
         $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'UpdatedEvent';
-        $this->dispatcher->fire(new $event_class($model));
+        $this->dispatcher->fire($this->event_updated_class->setModel($model));
         return $model;
     }
 
@@ -102,6 +102,6 @@ abstract class ManyToManyGateway
         $model = $this->repository->find($id);
         $this->repository->delete($id);
         $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'DeletedEvent';
-        $this->dispatcher->fire(new $event_class($model));
+        $this->dispatcher->fire($this->event_deleted_class->setModel($model));
     }
 }

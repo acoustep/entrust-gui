@@ -33,4 +33,21 @@ class RoleRepositoryEloquent extends BaseRepository implements RoleRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    /**
+     * Update attributes
+     *
+     * @param array $attributes
+     * @param integer $id
+     *
+     * @return Model
+     */
+    public function update(array $attributes, $id)
+    {
+        $defaults = ['permissions' => []];
+        $attributes = array_merge($defaults, $attributes);
+        $model = parent::update($attributes, $id);
+        $model->perms()->sync($attributes['permissions']);
+        return $this->parserResult($model);
+    }
 }

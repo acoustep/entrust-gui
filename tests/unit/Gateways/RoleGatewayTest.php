@@ -11,55 +11,117 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
      * @var \UnitTester
      */
     protected $tester;
+    protected $config;
+    protected $repository;
+    protected $dispatcher;
+    protected $event_created_class;
+    protected $event_updated_class;
+    protected $event_deleted_class;
 
     protected function _before()
     {
+        $this->config = m::mock('Illuminate\Config\Repository');
+        $this->repository = m::mock('Acoustep\EntrustGui\Repositories\RoleRepository, Prettus\Repository\Eloquent\BaseRepository');
+        $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
+        $this->dispatcher->shouldReceive('dispatch');
+        $this->event_created_class = m::namedMock('Acoustep\EntrustGui\Events\RoleCreatedEvent', 'App\Events\Event');
+        $this->event_updated_class = m::namedMock('Acoustep\EntrustGui\Events\RoleUpdatedEvent', 'App\Events\Event');
+        $this->event_deleted_class = m::namedMock('Acoustep\EntrustGui\Events\RoleDeletedEvent', 'App\Events\Event');
     }
 
     protected function _after()
     {
     }
 
-    // tests
-    public function testInitialisation()
+    /**
+     * @test
+     */
+    public function initialisation()
     {
-      $config = m::mock('Illuminate\Config\Repository');
-      $repository = m::mock('Acoustep\EntrustGui\Repositories\RoleRepository, Prettus\Repository\Eloquent\BaseRepository');
-      $dispatcher = m::mock('Illuminate\Events\Dispatcher');
-      $event_created_class = m::namedMock('Acoustep\EntrustGui\Events\RoleCreatedEvent', 'App\Events\Event');
-      $tester = new RoleGateway($config, $repository, $dispatcher, $event_created_class);
-      $this->assertInstanceOf(RoleGateway::class, $tester);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $this->assertInstanceOf(RoleGateway::class, $tester);
     }
 
-    public function testCreate()
+    /**
+     * @test
+     */
+    public function create()
     {
-      $data = [
-          'name' => 'Admin',
-          'display_name' => 'Admin',
-          'description' => 'The Administrator',
-          'permissions' => [1,2,3],
-      ];
+        $data = $this->getData();
 
-      $request = m::mock('Illuminate\Http\Request');
-      $request->shouldReceive('all')->andReturn($data);
-      $request->shouldReceive('get')->with('permissions', [])->andReturn($data['permissions']);
+        $request = m::mock('Illuminate\Http\Request');
+        $request->shouldReceive('all')
+            ->andReturn($data);
+        $request->shouldReceive('get')
+            ->with('permissions', [])
+            ->andReturn($data['permissions']);
 
-      $config = m::mock('Illuminate\Config\Repository');
-      $repository = m::mock('Acoustep\EntrustGui\Repositories\RoleRepository, Prettus\Repository\Eloquent\BaseRepository');
-      $repository->shouldReceive('create->perms->sync')->once();
-      $dispatcher = m::mock('Illuminate\Events\Dispatcher');
-      $event_created_class = m::namedMock('Acoustep\EntrustGui\Events\RoleCreatedEvent', 'App\Events\Event');
-      $event_created_class->shouldReceive('setModel')->with(m::any());
-      $dispatcher->shouldReceive('fire')->with(m::any());
+        $this->repository->shouldReceive('create->perms->sync')
+            ->once();
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_created_class->shouldReceive('setModel')
+              ->with(m::any());
 
-      $tester = new RoleGateway($config, $repository, $dispatcher, $event_created_class);
-      $result = $tester->create($request);
-      $this->assertInternalType('object', $result);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->create($request);
+        $this->assertInternalType('object', $result);
+    }
+    
+    /**
+     * @test
+     */
+    public function find()
+    {
+        $id = 1;
+        $repository = $this->repository;
+        $repository->shouldReceive('with->find');
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->find($id);
     }
 
-    public function testCreateThrowsExceptionWhenInvalid()
+    /**
+     * @test
+     */
+    public function update()
+    {
+        $data = $this->getData();
+        $id = 1;
+
+        $request = m::mock('Illuminate\Http\Request');
+        $request->shouldReceive('all')
+            ->andReturn($data);
+
+        $this->repository->shouldReceive('update')->andReturn($data);
+
+        $this->dispatcher->shouldReceive('fire')
+              ->with(m::any());
+        $this->event_updated_class->shouldReceive('setModel')
+              ->with(m::any());
+
+
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $result = $tester->update($request, $id);
+    }
+
+    /**
+     * @test
+     */
+    public function delete()
     {
     
+    }
+
+    protected function getData($override = [])
+    {
+        $data = [
+            'name' => 'Admin',
+            'display_name' => 'Admin',
+            'description' => 'The Administrator',
+            'permissions' => [1,2,3],
+        ];
+
+        return array_merge($data, $override);
     }
 
 }
