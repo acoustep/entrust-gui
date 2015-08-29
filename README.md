@@ -233,6 +233,18 @@ php artisan vendor:publish --tag="views"
 
 All files are then stored in the ```resources/views/vendor/entrust-gui``` directory.
 
+### Routes
+
+You may wish to link to pages in your own templates. EntrustGUI follows Laravel's ```Route::resource``` method with the exception of ```show```.
+
+```
+route('entrust-gui::users.index')
+route('entrust-gui::users.create')
+route('entrust-gui::users.destroy', $id)
+route('entrust-gui::users.update', $id)
+route('entrust-gui::users.edit', $id)
+```
+
 ### Events
 
 The following event classes are available:
