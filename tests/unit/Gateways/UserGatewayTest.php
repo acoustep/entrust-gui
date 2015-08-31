@@ -5,7 +5,7 @@ use Acoustep\EntrustGui\Gateways\UserRepository;
 use \Mockery as m;
 
 
-class RoleStub
+class RoleDummy
 {
 
 }
@@ -27,7 +27,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
     protected function _before()
     {
         $this->config = m::mock('Illuminate\Config\Repository');
-        $this->config->shouldReceive('get')->andReturn('\Gateways\RoleStub');
+        $this->config->shouldReceive('get')->andReturn('\Gateways\RoleDummy');
         $this->repository = m::mock('Acoustep\EntrustGui\Repositories\UserRepository, Prettus\Repository\Eloquent\BaseRepository');
         $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
         $this->dispatcher->shouldReceive('dispatch');
