@@ -122,7 +122,6 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
         $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
         $result = $tester->delete($id);
 
-    
     }
 
     protected function getData($override = [])

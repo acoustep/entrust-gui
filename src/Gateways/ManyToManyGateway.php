@@ -2,6 +2,8 @@
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
+use Acoustep\EntrustGui\Traits\DeleteModelTrait;
+use Acoustep\EntrustGui\Traits\FindModelTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -15,7 +17,7 @@ use Illuminate\Events\Dispatcher;
 abstract class ManyToManyGateway
 {
 
-    use PaginationGatewayTrait;
+    use PaginationGatewayTrait, FindModelTrait, DeleteModelTrait;
 
     protected $repository;
     protected $config;
@@ -24,6 +26,8 @@ abstract class ManyToManyGateway
     protected $relation_name;
     protected $short_relation_name;
     protected $event_created_class;
+    protected $event_updated_class;
+    protected $event_deleted_class;
 
     /**
      * Create a new gateway instance.
@@ -89,17 +93,4 @@ abstract class ManyToManyGateway
         return $model;
     }
 
-    /**
-     * Delete role
-     *
-     * @param integer $id
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        $model = $this->repository->find($id);
-        $this->repository->delete($id);
-        $this->dispatcher->fire($this->event_deleted_class->setModel($model));
-    }
 }

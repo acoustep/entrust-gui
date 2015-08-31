@@ -1,21 +1,22 @@
 <?php namespace Acoustep\EntrustGui\Traits;
 
-trait SetRoleModelTrait
+trait SetUserModelTrait
 {
 
-    public $role;
+    public $user;
 
     /**
      * Create a new event instance.
      *
-     * @param $role
+     * @param $user
      *
      * @return void
      */
     public function setModel($model)
     {
-        $this->role = $model;
+        $this->user = $model;
         return $this;
     }
 
 }
+
