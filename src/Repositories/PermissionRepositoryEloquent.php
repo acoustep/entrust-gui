@@ -33,4 +33,21 @@ class PermissionRepositoryEloquent extends BaseRepository implements PermissionR
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    /**
+     * Update attributes
+     *
+     * @param array $attributes
+     * @param integer $id
+     *
+     * @return Model
+     */
+    public function update(array $attributes, $id)
+    {
+        $defaults = ['roles' => []];
+        $attributes = array_merge($defaults, $attributes);
+        $model = parent::update($attributes, $id);
+        $model->roles()->sync($attributes['roles']);
+        return $this->parserResult($model);
+    }
 }

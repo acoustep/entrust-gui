@@ -11,7 +11,6 @@ Route::group(
         Route::get('users/{id}/edit', ['uses' => 'UsersController@edit', 'as' => 'entrust-gui::users.edit']);
         Route::put('users/{id}', ['uses' => 'UsersController@update', 'as' => 'entrust-gui::users.update']);
         Route::delete('users/{id}', ['uses' => 'UsersController@destroy', 'as' => 'entrust-gui::users.destroy']);
-        Route::get('users/{id}', ['uses' => 'UsersController@show', 'as' => 'entrust-gui::users.show']);
 
         Route::get('roles', ['uses' => 'RolesController@index', 'as' => 'entrust-gui::roles.index']);
         Route::get('roles/create', ['uses' => 'RolesController@create', 'as' => 'entrust-gui::roles.create']);
@@ -19,7 +18,6 @@ Route::group(
         Route::get('roles/{id}/edit', ['uses' => 'RolesController@edit', 'as' => 'entrust-gui::roles.edit']);
         Route::put('roles/{id}', ['uses' => 'RolesController@update', 'as' => 'entrust-gui::roles.update']);
         Route::delete('roles/{id}', ['uses' => 'RolesController@destroy', 'as' => 'entrust-gui::roles.destroy']);
-        Route::get('roles/{id}', ['uses' => 'RolesController@show', 'as' => 'entrust-gui::roles.show']);
 
         Route::get('permissions', ['uses' => 'PermissionsController@index', 'as' => 'entrust-gui::permissions.index']);
         Route::get(
@@ -52,13 +50,5 @@ Route::group(
             ]
         );
 
-
-        Route::get(
-            'permissions/{id}',
-            [
-                'uses' => 'PermissionsController@show',
-                'as' => 'entrust-gui::permissions.show'
-            ]
-        );
     }
 );

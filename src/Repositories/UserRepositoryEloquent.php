@@ -31,4 +31,37 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
+
+    /**
+     * Create model
+     *
+     * @param array $attributes
+     *
+     * @return Model
+     */
+    public function create(array $attributes)
+    {
+        $defaults = ['roles' => []];
+        $attributes = array_merge($defaults, $attributes);
+        $model = parent::create($attributes);
+        $model->roles()->sync($attributes['roles']);
+        return $this->parserResult($model);
+    }
+
+    /**
+     * Update attributes
+     *
+     * @param array $attributes
+     * @param integer $id
+     *
+     * @return Model
+     */
+    public function update(array $attributes, $id)
+    {
+        $defaults = ['roles' => []];
+        $attributes = array_merge($defaults, $attributes);
+        $model = parent::update($attributes, $id);
+        return $this->parserResult($model);
+    }
+
 }

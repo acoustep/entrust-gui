@@ -1,5 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Events;
 
+use Acoustep\EntrustGui\Traits\SetPermissionModelTrait;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,21 +11,9 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class PermissionUpdatedEvent extends Event
+class PermissionUpdatedEvent extends Event implements EventInterface
 {
 
-    use SerializesModels;
+    use SerializesModels, SetPermissionModelTrait;
 
-    public $permission;
-
-    /**
-     * Create a new event instance.
-     *
-     * @param $permission
-     *
-     * @return void
-     */    public function __construct($permission)
-    {
-        $this->permission = $permission;
-}
 }

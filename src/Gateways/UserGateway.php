@@ -5,6 +5,8 @@ use Acoustep\EntrustGui\Events\UserCreatedEvent;
 use Acoustep\EntrustGui\Events\UserUpdatedEvent;
 use Acoustep\EntrustGui\Events\UserDeletedEvent;
 use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
+use Acoustep\EntrustGui\Traits\DeleteModelTrait;
+use Acoustep\EntrustGui\Traits\FindModelTrait;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
@@ -19,13 +21,17 @@ use Illuminate\Events\Dispatcher;
 class UserGateway
 {
 
-    use PaginationGatewayTrait;
+    use PaginationGatewayTrait, FindModelTrait, DeleteModelTrait;
 
     protected $repository;
     protected $role;
     protected $config;
     protected $dispatcher;
     protected $hash;
+    protected $short_relation_name;
+    protected $event_created_class;
+    protected $event_updated_class;
+    protected $event_deleted_class;
 
     /**
      * Create a new gateway instance.
@@ -37,7 +43,7 @@ class UserGateway
      *
      * @return void
      */
-    public function __construct(Config $config, UserRepository $repository, Dispatcher $dispatcher, Hasher $hash)
+    public function __construct(Config $config, UserRepository $repository, Dispatcher $dispatcher, Hasher $hash, UserCreatedEvent $event_created_class, UserUpdatedEvent $event_updated_class, UserDeletedEvent $event_deleted_class)
     {
         $this->config = $config;
         $this->repository = $repository;
@@ -45,6 +51,10 @@ class UserGateway
         $this->role = new $role_class;
         $this->dispatcher = $dispatcher;
         $this->hash = $hash;
+        $this->event_created_class = $event_created_class;
+        $this->event_updated_class = $event_updated_class;
+        $this->event_deleted_class = $event_deleted_class;
+        $this->short_relation_name = 'roles';
     }
 
     /**
@@ -59,22 +69,9 @@ class UserGateway
         $data = $request->except('password');
         $data['password'] = ($request->get('password', false)) ? $this->hash->make($request->get('password', '')) : '';
         $user = $this->repository->create($data);
-        $user->roles()->sync($request->get('roles', []));
 
-        $this->dispatcher->fire(new UserCreatedEvent($user));
+        $this->dispatcher->fire($this->event_created_class->setModel($user));
         return $user;
-    }
-
-    /**
-     * Find user by ID
-     *
-     * @param integer $id
-     *
-     * @return Illuminate\Database\Eloquent\Model
-     */
-    public function find($id)
-    {
-        return $this->repository->with('roles')->find($id);
     }
 
     /**
@@ -92,23 +89,9 @@ class UserGateway
             $data['password'] = $this->hash->make($request->get('password'));
         }
         $user = $this->repository->update($data, $id);
-        $user->roles()->sync($request->get('roles', []));
-        $this->dispatcher->fire(new UserUpdatedEvent($user));
+        $this->dispatcher->fire($this->event_updated_class->setModel($user));
         return $user;
     }
 
-    /**
-     * Delete user
-     *
-     * @param integer $id
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        $user = $this->repository->with('roles')->find($id);
-        $this->repository->delete($id);
-        $this->dispatcher->fire(new UserDeletedEvent($user));
-    }
 
 }

@@ -1,6 +1,11 @@
 # Entrust GUI
 
 [![Code Climate](https://codeclimate.com/github/acoustep/entrust-gui/badges/gpa.svg)](https://codeclimate.com/github/acoustep/entrust-gui)
+[![Build Status](https://travis-ci.org/acoustep/entrust-gui.svg?branch=testing)](https://travis-ci.org/acoustep/entrust-gui)
+[![Latest Stable Version](https://poser.pugx.org/acoustep/entrust-gui/v/stable)](https://packagist.org/packages/acoustep/entrust-gui)
+[![Total Downloads](https://poser.pugx.org/acoustep/entrust-gui/downloads)](https://packagist.org/packages/acoustep/entrust-gui)
+[![Latest Unstable Version](https://poser.pugx.org/acoustep/entrust-gui/v/unstable)](https://packagist.org/packages/acoustep/entrust-gui)
+[![License](https://poser.pugx.org/acoustep/entrust-gui/license)](https://packagist.org/packages/acoustep/entrust-gui)
 
 *This package is in very early development - breaking changes are imminent*
 
@@ -232,6 +237,18 @@ php artisan vendor:publish --tag="views"
 ```
 
 All files are then stored in the ```resources/views/vendor/entrust-gui``` directory.
+
+### Routes
+
+You may wish to link to pages in your own templates. EntrustGUI follows Laravel's ```Route::resource``` method with the exception of ```show```.
+
+```
+route('entrust-gui::users.index')
+route('entrust-gui::users.create')
+route('entrust-gui::users.destroy', $id)
+route('entrust-gui::users.update', $id)
+route('entrust-gui::users.edit', $id)
+```
 
 ### Events
 

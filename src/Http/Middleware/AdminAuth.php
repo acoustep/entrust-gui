@@ -2,7 +2,9 @@
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
-use Config;
+use Illuminate\Config\Repository as Config;
+use Illuminate\Http\Response;
+use Illuminate\Routing\Redirector;
 
 /**
  * This file is part of Entrust GUI,
@@ -17,6 +19,9 @@ class AdminAuth
 {
 
     protected $auth;
+    protected $config;
+    protected $response;
+    protected $redirect;
 
     /**
      * Create a new AdminAuth instance.
@@ -25,9 +30,12 @@ class AdminAuth
      *
      * @return void
      */
-    public function __construct(Guard $auth)
+    public function __construct(Guard $auth, Config $config, Response $response, Redirector $redirect)
     {
         $this->auth = $auth;
+        $this->config = $config;
+        $this->response = $response;
+        $this->redirect = $redirect;
     }
 
     /**
@@ -42,12 +50,12 @@ class AdminAuth
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
-                return response('Unauthorized.', 401);
+                return $this->response->make('Unauthorized.', 401);
             } else {
-                return redirect()->guest('auth/login');
+                return $this->redirect->guest('auth/login');
             }
-        } elseif (! $request->user()->hasRole(Config::get('entrust-gui.middleware-role'))) {
-            return response('Unauthorized.', 401); //Or redirect() or whatever you want
+        } elseif (! $request->user()->hasRole($this->config->get('entrust-gui.middleware-role'))) {
+            return $this->response->make('Unauthorized.', 401); //Or redirect() or whatever you want
         }
         return $next($request);
     }

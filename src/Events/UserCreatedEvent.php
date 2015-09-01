@@ -1,5 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Events;
 
+use Acoustep\EntrustGui\Traits\SetUserModelTrait;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,21 +11,9 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class UserCreatedEvent extends Event
+class UserCreatedEvent extends Event implements EventInterface
 {
 
-    use SerializesModels;
+    use SerializesModels, SetUserModelTrait;
 
-    public $user;
-    /**
-     * Create a new event instance.
-     *
-     * @param $user
-     *
-     * @return void
-     */
-    public function __construct($user)
-    {
-        $this->user = $user;
-    }
 }

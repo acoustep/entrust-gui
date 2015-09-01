@@ -1,6 +1,9 @@
 <?php namespace Acoustep\EntrustGui\Gateways;
 
 use Acoustep\EntrustGui\Repositories\RoleRepository;
+use Acoustep\EntrustGui\Events\RoleCreatedEvent;
+use Acoustep\EntrustGui\Events\RoleUpdatedEvent;
+use Acoustep\EntrustGui\Events\RoleDeletedEvent;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -23,9 +26,9 @@ class RoleGateway extends ManyToManyGateway
      *
      * @return void
      */
-    public function __construct(Config $config, RoleRepository $repository, Dispatcher $dispatcher)
+    public function __construct(Config $config, RoleRepository $repository, Dispatcher $dispatcher, RoleCreatedEvent $event_created_class, RoleUpdatedEvent $event_updated_class, RoleDeletedEvent $event_deleted_class)
     {
-      parent::__construct($config, $repository, $dispatcher, 'role', 'permissions', 'perms');
+        parent::__construct($config, $repository, $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class, 'role', 'permissions', 'perms');
     }
 
 }

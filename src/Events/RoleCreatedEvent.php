@@ -1,5 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Events;
 
+use Acoustep\EntrustGui\Traits\SetRoleModelTrait;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,21 +11,9 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class RoleCreatedEvent extends Event
+class RoleCreatedEvent extends Event implements EventInterface
 {
 
-    use SerializesModels;
+    use SerializesModels, SetRoleModelTrait;
 
-    public $role;
-    /**
-     * Create a new event instance.
-     *
-     * @param $role
-     *
-     * @return void
-     */
-    public function __construct($role)
-    {
-        $this->role = $role;
-    }
 }

@@ -2,6 +2,8 @@
 
 use Prettus\Repository\Eloquent\BaseRepository;
 use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
+use Acoustep\EntrustGui\Traits\DeleteModelTrait;
+use Acoustep\EntrustGui\Traits\FindModelTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -15,7 +17,7 @@ use Illuminate\Events\Dispatcher;
 abstract class ManyToManyGateway
 {
 
-    use PaginationGatewayTrait;
+    use PaginationGatewayTrait, FindModelTrait, DeleteModelTrait;
 
     protected $repository;
     protected $config;
@@ -23,6 +25,9 @@ abstract class ManyToManyGateway
     protected $model_name;
     protected $relation_name;
     protected $short_relation_name;
+    protected $event_created_class;
+    protected $event_updated_class;
+    protected $event_deleted_class;
 
     /**
      * Create a new gateway instance.
@@ -33,12 +38,15 @@ abstract class ManyToManyGateway
      *
      * @return void
      */
-    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $model_name, $relation_name, $short_relation_name)
+    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class, $model_name, $relation_name, $short_relation_name)
     {
         $this->config = $config;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
         $this->model_name = $model_name;
+        $this->event_created_class = $event_created_class;
+        $this->event_updated_class = $event_updated_class;
+        $this->event_deleted_class = $event_deleted_class;
         $this->relation_name = $relation_name;
         $this->short_relation_name = $short_relation_name;
     }
@@ -54,8 +62,7 @@ abstract class ManyToManyGateway
     {
         $model = $this->repository->create($request->all());
         $model->{$this->short_relation_name}()->sync($request->get($this->relation_name, []));
-        $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'CreatedEvent';
-        $this->dispatcher->fire(new $event_class($model));
+        $this->dispatcher->fire($this->event_created_class->setModel($model));
         return $model;
     }
 
@@ -81,26 +88,9 @@ abstract class ManyToManyGateway
      */
     public function update($request, $id)
     {
-        $model = $this->repository->find($id);
-        $model->update($request->all());
-        $model->{$this->short_relation_name}()->sync($request->get($this->relation_name, []));
-        $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'UpdatedEvent';
-        $this->dispatcher->fire(new $event_class($model));
+        $model = $this->repository->update($request->all(), $id);
+        $this->dispatcher->fire($this->event_updated_class->setModel($model));
         return $model;
     }
 
-    /**
-     * Delete role
-     *
-     * @param integer $id
-     *
-     * @return void
-     */
-    public function delete($id)
-    {
-        $model = $this->repository->find($id);
-        $this->repository->delete($id);
-        $event_class = '\Acoustep\EntrustGui\Events\\'.ucwords($this->model_name).'DeletedEvent';
-        $this->dispatcher->fire(new $event_class($model));
-    }
 }
