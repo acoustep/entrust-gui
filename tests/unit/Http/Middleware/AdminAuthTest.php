@@ -1,5 +1,5 @@
 <?php
-namespace Middleware;
+namespace Http\Middleware;
 
 use Acoustep\EntrustGui\Http\Middleware\AdminAuth;
 use \Mockery as m;
