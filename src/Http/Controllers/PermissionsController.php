@@ -1,10 +1,8 @@
 <?php namespace Acoustep\EntrustGui\Http\Controllers;
 
 use Acoustep\EntrustGui\Gateways\PermissionGateway;
-use App\Http\Controllers\Controller;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
-use Watson\Validating\ValidationException;
 
 /**
  * This file is part of Entrust GUI,
@@ -16,15 +14,17 @@ use Watson\Validating\ValidationException;
 class PermissionsController extends ManyToManyController
 {
     /**
-     * Create a new RolesController instance.
+     * Create a new PermissionsController instance.
      *
      * @param Request $request
-     * @param PermissionGateway $gateway
      * @param Config $config
+     * @param PermissionGateway $gateway
      *
      * @return void
      */
-    public function __construct(Request $request, Config $config, PermissionGateway $model) {
+    public function __construct(Request $request, Config $config, PermissionGateway $model)
+    {
         parent::__construct($request, $config, $model, 'permissions', 'role');
     }
+
 }

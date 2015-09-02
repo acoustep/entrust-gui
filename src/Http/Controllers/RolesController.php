@@ -1,10 +1,8 @@
 <?php namespace Acoustep\EntrustGui\Http\Controllers;
 
 use Acoustep\EntrustGui\Gateways\RoleGateway;
-use App\Http\Controllers\Controller;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Http\Request;
-use Watson\Validating\ValidationException;
 
 /**
  * This file is part of Entrust GUI,
@@ -19,12 +17,14 @@ class RolesController extends ManyToManyController
      * Create a new RolesController instance.
      *
      * @param Request $request
-     * @param RoleGateway $gateway
      * @param Config $config
+     * @param RoleGateway $gateway
      *
      * @return void
      */
-    public function __construct(Request $request, Config $config, RoleGateway $model) {
+    public function __construct(Request $request, Config $config, RoleGateway $model)
+    {
         parent::__construct($request, $config, $model, 'roles', 'permission');
     }
+
 }
