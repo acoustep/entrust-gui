@@ -2,6 +2,9 @@
 
 namespace Acoustep\EntrustGui\Repositories;
 
+use Acoustep\EntrustGui\Traits\GetPermissionModelNameTrait;
+use Acoustep\EntrustGui\Traits\GetPermissionRelationNameTrait;
+
 /**
  * This file is part of Entrust GUI,
  * A Laravel 5 GUI for Entrust.
@@ -12,20 +15,6 @@ namespace Acoustep\EntrustGui\Repositories;
 class PermissionRepositoryEloquent extends ManyToManyRepositoryEloquent implements PermissionRepository
 {
 
-    /**
-     * Update attributes
-     *
-     * @param array $attributes
-     * @param integer $id
-     *
-     * @return Model
-     */
-    public function update(array $attributes, $id)
-    {
-        $defaults = ['roles' => []];
-        $attributes = array_merge($defaults, $attributes);
-        $model = parent::update($attributes, $id);
-        $model->roles()->sync($attributes['roles']);
-        return $this->parserResult($model);
-    }
+    use GetPermissionModelNameTrait, GetPermissionRelationNameTrait;
+
 }

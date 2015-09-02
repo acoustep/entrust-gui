@@ -23,10 +23,9 @@ abstract class ManyToManyRepositoryEloquent extends BaseRepository implements Ro
      */
     public function model()
     {
-        $classname = new \ReflectionClass(get_called_class());
-        $classname = $classname->getShortName();
-        return Config::get('entrust.'.strtolower(substr($classname, 0, strpos($classname, 'RepositoryEloquent'))));
+        return Config::get('entrust.'.$this->getModelName());
     }
+
 
     /**
      * Boot up the repository, pushing criteria
@@ -34,6 +33,23 @@ abstract class ManyToManyRepositoryEloquent extends BaseRepository implements Ro
     public function boot()
     {
         $this->pushCriteria(app(RequestCriteria::class));
+    }
+
+    /**
+     * Update attributes
+     *
+     * @param array $attributes
+     * @param integer $id
+     *
+     * @return Model
+     */
+    public function update(array $attributes, $id)
+    {
+        $defaults = ["{$this->getRelationName()}" => []];
+        $attributes = array_merge($defaults, $attributes);
+        $model = parent::update($attributes, $id);
+        $model->{$this->getShortRelationName()}()->sync($attributes["{$this->getRelationName()}"]);
+        return $this->parserResult($model);
     }
 
 }

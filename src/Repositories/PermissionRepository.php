@@ -13,5 +13,11 @@ use Prettus\Repository\Contracts\RepositoryInterface;
  */
 interface PermissionRepository extends RepositoryInterface
 {
-    //
+
+    public function getModelName();
+
+    public function getRelationName();
+
+    public function getShortRelationName();
+
 }
