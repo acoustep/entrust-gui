@@ -22,9 +22,6 @@ abstract class ManyToManyGateway
     protected $repository;
     protected $config;
     protected $dispatcher;
-    protected $model_name;
-    protected $relation_name;
-    protected $short_relation_name;
     protected $event_created_class;
     protected $event_updated_class;
     protected $event_deleted_class;
@@ -38,17 +35,14 @@ abstract class ManyToManyGateway
      *
      * @return void
      */
-    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class, $model_name, $relation_name, $short_relation_name)
+    public function __construct(Config $config, BaseRepository $repository, Dispatcher $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class)
     {
         $this->config = $config;
         $this->repository = $repository;
         $this->dispatcher = $dispatcher;
-        $this->model_name = $model_name;
         $this->event_created_class = $event_created_class;
         $this->event_updated_class = $event_updated_class;
         $this->event_deleted_class = $event_deleted_class;
-        $this->relation_name = $relation_name;
-        $this->short_relation_name = $short_relation_name;
     }
 
     /**
@@ -61,7 +55,7 @@ abstract class ManyToManyGateway
     public function create($request)
     {
         $model = $this->repository->create($request->all());
-        $model->{$this->short_relation_name}()->sync($request->get($this->relation_name, []));
+        $model->{$this->getShortRelationName()}()->sync($request->get($this->getRelationName(), []));
         $this->dispatcher->fire($this->event_created_class->setModel($model));
         return $model;
     }
@@ -75,7 +69,7 @@ abstract class ManyToManyGateway
      */
     public function find($id)
     {
-        return $this->repository->with($this->short_relation_name)->find($id);
+        return $this->repository->with($this->getShortRelationName())->find($id);
     }
 
     /**

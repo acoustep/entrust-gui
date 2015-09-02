@@ -14,7 +14,7 @@ use Illuminate\Events\Dispatcher;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class PermissionGateway extends ManyToManyGateway
+class PermissionGateway extends ManyToManyGateway implements ManyToManyGatewayInterface
 {
 
     /**
@@ -29,6 +29,21 @@ class PermissionGateway extends ManyToManyGateway
     public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher, PermissionCreatedEvent $event_created_class, PermissionUpdatedEvent $event_updated_class, PermissionDeletedEvent $event_deleted_class)
     {
         parent::__construct($config, $repository, $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class, 'permission', 'roles', 'roles');
+    }
+
+    public function getModelName()
+    {
+        return 'permission';
+    }
+
+    public function getShortRelationName()
+    {
+        return 'roles';
+    }
+
+    public function getRelationName()
+    {
+        return 'roles';
     }
 
 }
