@@ -2,5 +2,4 @@
 /node_modules
 tests/_data/*
 tests/_log/*
-tests/_support/*
 .idea
