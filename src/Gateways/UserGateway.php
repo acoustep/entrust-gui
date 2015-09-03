@@ -4,9 +4,10 @@ use Acoustep\EntrustGui\Repositories\UserRepository;
 use Acoustep\EntrustGui\Events\UserCreatedEvent;
 use Acoustep\EntrustGui\Events\UserUpdatedEvent;
 use Acoustep\EntrustGui\Events\UserDeletedEvent;
-use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Acoustep\EntrustGui\Traits\DeleteModelTrait;
 use Acoustep\EntrustGui\Traits\FindModelTrait;
+use Acoustep\EntrustGui\Traits\GetPermissionUserRelationNameTrait;
+use Acoustep\EntrustGui\Traits\PaginationGatewayTrait;
 use Illuminate\Contracts\Hashing\Hasher;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
@@ -18,20 +19,16 @@ use Illuminate\Events\Dispatcher;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class UserGateway
+class UserGateway implements ManyToManyGatewayInterface
 {
 
-    use PaginationGatewayTrait, FindModelTrait, DeleteModelTrait;
+    use PaginationGatewayTrait, FindModelTrait, DeleteModelTrait, GetPermissionUserRelationNameTrait;
 
     protected $repository;
     protected $role;
     protected $config;
     protected $dispatcher;
     protected $hash;
-    protected $short_relation_name;
-    protected $event_created_class;
-    protected $event_updated_class;
-    protected $event_deleted_class;
 
     /**
      * Create a new gateway instance.
@@ -43,7 +40,7 @@ class UserGateway
      *
      * @return void
      */
-    public function __construct(Config $config, UserRepository $repository, Dispatcher $dispatcher, Hasher $hash, UserCreatedEvent $event_created_class, UserUpdatedEvent $event_updated_class, UserDeletedEvent $event_deleted_class)
+    public function __construct(Config $config, UserRepository $repository, Dispatcher $dispatcher, Hasher $hash)
     {
         $this->config = $config;
         $this->repository = $repository;
@@ -51,10 +48,6 @@ class UserGateway
         $this->role = new $role_class;
         $this->dispatcher = $dispatcher;
         $this->hash = $hash;
-        $this->event_created_class = $event_created_class;
-        $this->event_updated_class = $event_updated_class;
-        $this->event_deleted_class = $event_deleted_class;
-        $this->short_relation_name = 'roles';
     }
 
     /**
@@ -70,7 +63,9 @@ class UserGateway
         $data['password'] = ($request->get('password', false)) ? $this->hash->make($request->get('password', '')) : '';
         $user = $this->repository->create($data);
 
-        $this->dispatcher->fire($this->event_created_class->setModel($user));
+        $event_class = "Acoustep\EntrustGui\Events\\".ucwords($this->getModelName()).'CreatedEvent';
+        $event = new $event_class;
+        $this->dispatcher->fire($event->setModel($user));
         return $user;
     }
 
@@ -89,9 +84,21 @@ class UserGateway
             $data['password'] = $this->hash->make($request->get('password'));
         }
         $user = $this->repository->update($data, $id);
-        $this->dispatcher->fire($this->event_updated_class->setModel($user));
+        $event_class = "Acoustep\EntrustGui\Events\\".ucwords($this->getModelName()).'UpdatedEvent';
+        $event = new $event_class;
+        $this->dispatcher->fire($event->setModel($user));
         return $user;
     }
 
+    /**
+     * Return model name
+     *
+     *
+     * @return string
+     */
+    public function getModelName()
+    {
+      return 'user';
+    }
 
 }

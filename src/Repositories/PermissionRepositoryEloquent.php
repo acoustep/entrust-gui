@@ -3,7 +3,7 @@
 namespace Acoustep\EntrustGui\Repositories;
 
 use Acoustep\EntrustGui\Traits\GetPermissionModelNameTrait;
-use Acoustep\EntrustGui\Traits\GetPermissionRelationNameTrait;
+use Acoustep\EntrustGui\Traits\GetPermissionUserRelationNameTrait;
 
 /**
  * This file is part of Entrust GUI,
@@ -15,6 +15,6 @@ use Acoustep\EntrustGui\Traits\GetPermissionRelationNameTrait;
 class PermissionRepositoryEloquent extends ManyToManyRepositoryEloquent implements PermissionRepository
 {
 
-    use GetPermissionModelNameTrait, GetPermissionRelationNameTrait;
+    use GetPermissionModelNameTrait, GetPermissionUserRelationNameTrait;
 
 }

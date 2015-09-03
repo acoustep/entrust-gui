@@ -20,9 +20,6 @@ class UserGatewayTest extends \Codeception\TestCase\Test
     protected $config;
     protected $repository;
     protected $dispatcher;
-    protected $event_created_class;
-    protected $event_updated_class;
-    protected $event_deleted_class;
 
     protected function _before()
     {
@@ -32,9 +29,6 @@ class UserGatewayTest extends \Codeception\TestCase\Test
         $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
         $this->dispatcher->shouldReceive('dispatch');
         $this->hash = m::mock('Illuminate\Contracts\Hashing\Hasher');
-        $this->event_created_class = m::namedMock('Acoustep\EntrustGui\Events\UserCreatedEvent', 'App\Events\Event');
-        $this->event_updated_class = m::namedMock('Acoustep\EntrustGui\Events\UserUpdatedEvent', 'App\Events\Event');
-        $this->event_deleted_class = m::namedMock('Acoustep\EntrustGui\Events\UserDeletedEvent', 'App\Events\Event');
     }
 
     protected function _after()
@@ -46,7 +40,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
      */
     public function initialisation()
     {
-        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash);
         $this->assertInstanceOf(UserGateway::class, $tester);
     }
 
@@ -71,10 +65,10 @@ class UserGatewayTest extends \Codeception\TestCase\Test
 
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_created_class->shouldReceive('setModel')
-              ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\UserCreatedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash);
         $tester->create($request);
     }
 
@@ -102,10 +96,10 @@ class UserGatewayTest extends \Codeception\TestCase\Test
 
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_updated_class->shouldReceive('setModel')
-              ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\UserUpdatedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash);
         $tester->update($request, $id);
     }
 
@@ -126,10 +120,10 @@ class UserGatewayTest extends \Codeception\TestCase\Test
 
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_deleted_class->shouldReceive('setModel')
-              ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\UserDeletedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash);
         $result = $tester->delete($id);
 
     }
@@ -143,7 +137,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
         $id = 1;
         $repository = $this->repository;
         $repository->shouldReceive('with->find');
-        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new UserGateway($this->config, $this->repository, $this->dispatcher, $this->hash);
         $result = $tester->find($id);
     }
 

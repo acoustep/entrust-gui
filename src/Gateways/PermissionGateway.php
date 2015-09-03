@@ -1,11 +1,8 @@
 <?php namespace Acoustep\EntrustGui\Gateways;
 
 use Acoustep\EntrustGui\Repositories\PermissionRepository;
-use Acoustep\EntrustGui\Events\PermissionCreatedEvent;
-use Acoustep\EntrustGui\Events\PermissionUpdatedEvent;
-use Acoustep\EntrustGui\Events\PermissionDeletedEvent;
 use Acoustep\EntrustGui\Traits\GetPermissionModelNameTrait;
-use Acoustep\EntrustGui\Traits\GetPermissionRelationNameTrait;
+use Acoustep\EntrustGui\Traits\GetPermissionUserRelationNameTrait;
 use Illuminate\Config\Repository as Config;
 use Illuminate\Events\Dispatcher;
 
@@ -19,7 +16,7 @@ use Illuminate\Events\Dispatcher;
 class PermissionGateway extends ManyToManyGateway implements ManyToManyGatewayInterface
 {
 
-    use GetPermissionModelNameTrait, GetPermissionRelationNameTrait;
+    use GetPermissionModelNameTrait, GetPermissionUserRelationNameTrait;
 
     /**
      * Create a new gateway instance.
@@ -30,9 +27,9 @@ class PermissionGateway extends ManyToManyGateway implements ManyToManyGatewayIn
      *
      * @return void
      */
-    public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher, PermissionCreatedEvent $event_created_class, PermissionUpdatedEvent $event_updated_class, PermissionDeletedEvent $event_deleted_class)
+    public function __construct(Config $config, PermissionRepository $repository, Dispatcher $dispatcher)
     {
-        parent::__construct($config, $repository, $dispatcher, $event_created_class, $event_updated_class, $event_deleted_class);
+        parent::__construct($config, $repository, $dispatcher);
     }
 
 }

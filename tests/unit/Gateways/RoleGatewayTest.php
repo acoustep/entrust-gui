@@ -14,9 +14,6 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
     protected $config;
     protected $repository;
     protected $dispatcher;
-    protected $event_created_class;
-    protected $event_updated_class;
-    protected $event_deleted_class;
 
     protected function _before()
     {
@@ -24,9 +21,6 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
         $this->repository = m::mock('Acoustep\EntrustGui\Repositories\RoleRepository, Prettus\Repository\Eloquent\BaseRepository');
         $this->dispatcher = m::mock('Illuminate\Events\Dispatcher');
         $this->dispatcher->shouldReceive('dispatch');
-        $this->event_created_class = m::namedMock('Acoustep\EntrustGui\Events\RoleCreatedEvent', 'App\Events\Event');
-        $this->event_updated_class = m::namedMock('Acoustep\EntrustGui\Events\RoleUpdatedEvent', 'App\Events\Event');
-        $this->event_deleted_class = m::namedMock('Acoustep\EntrustGui\Events\RoleDeletedEvent', 'App\Events\Event');
     }
 
     protected function _after()
@@ -38,7 +32,7 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
      */
     public function initialisation()
     {
-        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher);
         $this->assertInstanceOf(RoleGateway::class, $tester);
     }
 
@@ -60,10 +54,12 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
             ->once();
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_created_class->shouldReceive('setModel')
-              ->with(m::any());
+        // $this->event_created_class->shouldReceive('setModel')
+        //       ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\RoleCreatedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher);
         $result = $tester->create($request);
         $this->assertInternalType('object', $result);
     }
@@ -76,7 +72,7 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
         $id = 1;
         $repository = $this->repository;
         $repository->shouldReceive('with->find');
-        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher);
         $result = $tester->find($id);
     }
 
@@ -96,10 +92,10 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
 
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_updated_class->shouldReceive('setModel')
-              ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\RoleUpdatedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher);
         $result = $tester->update($request, $id);
     }
 
@@ -116,10 +112,10 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
 
         $this->dispatcher->shouldReceive('fire')
               ->with(m::any());
-        $this->event_deleted_class->shouldReceive('setModel')
-              ->with(m::any());
+        $event = m::mock("overload:Acoustep\EntrustGui\Events\RoleDeletedEvent");
+        $event->shouldReceive('setModel');
 
-        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher, $this->event_created_class, $this->event_updated_class, $this->event_deleted_class);
+        $tester = new RoleGateway($this->config, $this->repository, $this->dispatcher);
         $result = $tester->delete($id);
 
     }

@@ -12,7 +12,7 @@ trait FindModelTrait
      */
     public function find($id)
     {
-        return $this->repository->with($this->short_relation_name)->find($id);
+        return $this->repository->with($this->getShortRelationName())->find($id);
     }
 
 }

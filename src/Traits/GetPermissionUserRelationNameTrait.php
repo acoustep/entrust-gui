@@ -1,6 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Traits;
 
-trait GetPermissionRelationNameTrait
+trait GetPermissionUserRelationNameTrait
 {
 
     /**
