@@ -61,6 +61,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $defaults = ['roles' => []];
         $attributes = array_merge($defaults, $attributes);
         $model = parent::update($attributes, $id);
+        $model->roles()->sync($attributes['roles']);
         return $this->parserResult($model);
     }
 

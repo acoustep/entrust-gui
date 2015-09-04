@@ -1,0 +1,35 @@
+# Change Log
+
+All notable changes to this project will be documented in this file.
+This project adheres to [Semantic Versioning](http://semver.org/).
+
+## [Unreleased][unreleased]
+### Changed
+- Add old input to forms when validation fails.
+
+## [0.3.2] - 2015-09-03
+### Changed
+- Refactor gateway classes
+
+## [0.3.1] - 2015-09-02
+### Changed
+- Remove test directory from codeception
+- Move duplicate gateway methods into traits
+
+## [0.3.0] - 2015-09-01
+### Changed
+- Add Codeception
+- Add gateway and middleware tests
+- Refactor gateway to inject more dependencies
+- Add badges to README.md
+- Add route documentation to README.md
+
+## [0.2.0] - 2015-08-15
+### Changed
+- Add English translations
+
+## [0.1.0] - 2015-08-12
+### Changed
+- Initial GUI
+- Events
+- Validation

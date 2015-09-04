@@ -342,7 +342,7 @@ Translations are then published to ```resources/lang/vendor/entrust-gui```.
 
 ## To do
 
-* Testing
 * Advanced middleware configuration
-* Translations
 * Document code
+* Example of adding password confirmation field
+* CLI for generating User, Permission and Roles

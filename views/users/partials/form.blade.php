@@ -1,7 +1,7 @@
 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 <div class="form-group">
   <label for="email">Email address</label>
-  <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ $user->email }}">
+  <input type="email" class="form-control" id="email" placeholder="Email" name="email" value="{{ (old('email') !== null) ? old('email', '') : $user->email }}">
 </div>
 <div class="form-group">
   <label for="password">Password</label>
@@ -16,7 +16,7 @@
   <label for="roles">Roles</label>
   <select name="roles[]" multiple class="form-control">
     @foreach($roles as $index => $role)
-      <option value="{{ $index }}" {{ ($user->roles->contains('id', $index)) ? 'selected' : '' }}>{{ $role }}</option>
+      <option value="{{ $index }}" {{ ((in_array($index, old('roles', []))) || (old('roles') === null && $user->roles->contains('id', $index))) ? 'selected' : '' }}>{{ $role }}</option>
     @endforeach
   </select>
 </div>
