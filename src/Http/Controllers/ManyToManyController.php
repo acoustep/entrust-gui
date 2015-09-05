@@ -27,7 +27,7 @@ abstract class ManyToManyController extends Controller
      * Create a new ManyToManyController instance.
      *
      * @param Request $request
-     * @param PermissionGateway $gateway
+     * @param ManyToManyGateway $gateway
      * @param Config $config
      *
      * @return void
@@ -44,7 +44,7 @@ abstract class ManyToManyController extends Controller
 
     /**
      * Display a listing of the resource.
-     * GET /roles
+     * GET /model
      *
      * @return Response
      */
@@ -59,7 +59,7 @@ abstract class ManyToManyController extends Controller
 
     /**
      * Show the form for creating a new resource.
-     * GET /roles/create
+     * GET /model/create
      *
      * @return Response
      */
@@ -77,7 +77,7 @@ abstract class ManyToManyController extends Controller
 
     /**
      * Store a newly created resource in storage.
-     * POST /roles
+     * POST /model
      *
      * @return Response
      */
@@ -86,14 +86,14 @@ abstract class ManyToManyController extends Controller
         try {
             $this->gateway->create($this->request);
         } catch (ValidationException $e) {
-            return back()->withErrors($e->getErrors());
+            return back()->withErrors($e->getErrors())->withInput();
         }
         return redirect(route('entrust-gui::'.$this->resource.'.index'))->withSuccess(trans('entrust-gui::'.$this->resource.'.created'));
     }
 
     /**
      * Show the form for editing the specified resource.
-     * GET /roles/{id}/edit
+     * GET /model/{id}/edit
      *
      * @param int $id
      *
@@ -112,7 +112,7 @@ abstract class ManyToManyController extends Controller
 
     /**
      * Update the specified resource in storage.
-     * PUT /roles/{id}
+     * PUT /model/{id}
      *
      * @param int $id
      *
@@ -123,14 +123,14 @@ abstract class ManyToManyController extends Controller
         try {
             $role = $this->gateway->update($this->request, $id);
         } catch (ValidationException $e) {
-            return back()->withErrors($e->getErrors());
+            return back()->withErrors($e->getErrors())->withInput();
         }
         return redirect(route('entrust-gui::'.$this->resource.'.index'))->withSuccess(trans('entrust-gui::'.$this->resource.'.updated'));
     }
   
     /**
      * Remove the specified resource from storage.
-     * DELETE /roles/{id}
+     * DELETE /model/{id}
      *
      * @param int $id
      *
