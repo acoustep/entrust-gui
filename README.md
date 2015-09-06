@@ -194,17 +194,15 @@ You can change this prefix by editing ```route-prefix``` in ```config/entrust-gu
 'route-prefix' => 'admin'
 ```
 
-Entrust GUI uses the ```auth``` middleware. Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in and using the default ```admin``` middleware.
+Pointing your app to ```/entrust-gui/users``` will redirect you to ```/auth/login``` if you are not logged in as admin using the default ```entrust-gui.admin``` middleware.
 
 If you have not set up Laravel authentication you will see a ```NotFoundHttpException``` exception. See the Laravel [Authentication](http://laravel.com/docs/5.1/authentication) documentation for setting up the Login system in Laravel 5.1.
-
-If your account does not have the role ```admin``` you will see an unauthorized request page. You can set this in the database or temporarily switch the middleware to ```null``` or ```auth``` to give yourself access to Entrust GUI and configure your roles from within the GUI.
 
 ### Middleware
 
 By default Entrust GUI uses ```entrust-gui.admin``` for middleware. This allows logged in users with the ```admin``` role to access it.
 
-You can change the middleware in ```config/entrust-gui.php``` in the middleware setting.
+You can change the middleware in ```config/entrust-gui.php``` in the ```middleware``` setting.
 
 If you wish to test out the system without middleware then go to ```config/entrust-gui.php``` and set middleware to ```null```.
 
@@ -434,13 +432,13 @@ Update ```config/entrust-gui.php```
 
 Starting from 0.4.0 Entrust GUI switches from ```dwightwatson/validating``` to ```esensi/model```. 
 
-This means that hashing passwords has moved from the package to the ```User``` model.
+Hashing passwords has moved from the package to the ```User``` model.
 
 Update your ```User``` model to the one in the latest documentation.
 
 Add ```'confirmable' => false,``` to your configuration file.
 
-If you intend to use the confirmable option and have already published the views add the following to your ```resources/views/vendor/entrust-gui/users/partials/form.blade.php```.
+If you intend to use the confirmable option and have already published the views add the following to your ```resources/views/vendor/entrust-gui/users/partials/form.blade.php``` template
 
 ```
 @if(Config::get('entrust-gui.confirmable') === true)
@@ -457,4 +455,3 @@ If you intend to use the confirmable option and have already published the views
 * Document code
 * CLI for generating User, Permission and Roles
 * Animated video preview
-* Fix spacing on buttons
