@@ -3,7 +3,9 @@
 @section('heading', 'Roles')
 
 @section('content')
-<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-role') }}</a>
+<div class="models--actions">
+    <a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-role') }}</a>
+</div>
 <table class="table table-striped">
     <tr>
         <th>Name</th>

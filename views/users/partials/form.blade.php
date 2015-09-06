@@ -12,6 +12,12 @@
         </div>
     @endif
 </div>
+@if(Config::get('entrust-gui.confirmable') === true)
+<div class="form-group">
+    <label for="password">Confirm Password</label>
+    <input type="password" class="form-control" id="password_confirmation" placeholder="Confirm Password" name="password_confirmation">
+</div>
+@endif
 <div class="form-group">
     <label for="roles">Roles</label>
     <select name="roles[]" multiple class="form-control">

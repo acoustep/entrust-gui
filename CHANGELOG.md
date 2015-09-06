@@ -3,9 +3,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [0.4.0] - 2015-09-06
 ### Changed
 - Add old input to forms when validation fails.
+- Move from [dwightwatson/validating](https://github.com/dwightwatson/validating) to [esensi/model](https://github.com/esensi/model)
+- Move password hashing form the package to the ```User``` model.
+- Add password confirmation feature
+- Fix spacing issues on various button and link elements
 
 ## [0.3.2] - 2015-09-03
 ### Changed

@@ -7,8 +7,6 @@
 [![Latest Unstable Version](https://poser.pugx.org/acoustep/entrust-gui/v/unstable)](https://packagist.org/packages/acoustep/entrust-gui)
 [![License](https://poser.pugx.org/acoustep/entrust-gui/license)](https://packagist.org/packages/acoustep/entrust-gui)
 
-*This package is in very early development - breaking changes are imminent*
-
 Entrust GUI is a Admin Interface that makes the administration of users, roles and permissions easier for the [Entrust](https://github.com/Zizaco/entrust) package.
 
 This package is currently not for handling authentication, authorisation or registration of users. 
@@ -48,28 +46,29 @@ php artisan entrust:migration
 php artisan migrate
 ```
 
-Entrust GUI uses [dwight/validating](https://github.com/dwightwatson/validating) which means you can set your validation rules in your models.
+Entrust GUI uses [esensi/model](https://github.com/esensi/model) which means you can set your validation rules in your models.
 
 Here are ```User```, ```Role``` and ```Permission``` models to get you started.
 
 ### app/User.php
 
 ```
-<?php
+<?php namespace App;
 
-namespace App;
-
+use Esensi\Model\Contracts\HashingModelInterface;
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\HashingModelTrait;
+use Esensi\Model\Traits\ValidatingModelTrait;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Watson\Validating\ValidatingTrait;
+use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface
 {
-    use Authenticatable, CanResetPassword, ValidatingTrait, EntrustUserTrait;
+    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, HashingModelTrait;
 
     protected $throwValidationExceptions = true;
 
@@ -94,9 +93,19 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      */
     protected $hidden = ['password', 'remember_token'];
 
-    protected $rules = [
-      'email'      => 'required|email|unique:users',
-      'password'   => 'required',
+    protected $hashable = ['password'];
+
+    protected $rulesets = [
+
+        'creating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => 'required',
+        ],
+
+        'updating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => '',
+        ],
     ];
 
 }
@@ -107,12 +116,13 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 ```
 <?php namespace App;
 
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\ValidatingModelTrait;
 use Zizaco\Entrust\EntrustRole;
-use Watson\Validating\ValidatingTrait;
 
-class Role extends EntrustRole
+class Role extends EntrustRole implements ValidatingModelInterface
 {
-  use ValidatingTrait;
+  use ValidatingModelTrait;
 
   protected $throwValidationExceptions = true;
 
@@ -124,6 +134,7 @@ class Role extends EntrustRole
 
   protected $rules = [
     'name'      => 'required|unique:roles',
+    'display_name'      => 'required|unique:roles',
   ];
 }
 ```
@@ -133,12 +144,15 @@ class Role extends EntrustRole
 ```
 <?php namespace App;
 
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\ValidatingModelTrait;
 use Zizaco\Entrust\EntrustPermission;
-use Watson\Validating\ValidatingTrait;
 
-class Permission extends EntrustPermission
+class Permission extends EntrustPermission implements ValidatingModelInterface
 {
-  use ValidatingTrait;
+  use ValidatingModelTrait;
+
+  protected $throwValidationExceptions = true;
 
   protected $fillable = [
     'name',
@@ -339,12 +353,108 @@ php artisan vendor:publish --tag="translations"
 
 Translations are then published to ```resources/lang/vendor/entrust-gui```.
 
+### Adding Password Confirmation Field to Users
+
+Update your ```User``` model to the following:
+
+```
+<?php namespace App;
+
+use Esensi\Model\Contracts\HashingModelInterface;
+use Esensi\Model\Contracts\PurgingModelInterface;
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\HashingModelTrait;
+use Esensi\Model\Traits\PurgingModelTrait;
+use Esensi\Model\Traits\ValidatingModelTrait;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface, PurgingModelInterface
+{
+    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, PurgingModelTrait, HashingModelTrait;
+
+    protected $throwValidationExceptions = true;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email', 'password', 'password_confirmation'];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
+
+    protected $purgeable = [
+        'password_confirmation',
+    ];
+
+    protected $hashable = ['password'];
+
+    protected $rulesets = [
+
+        'creating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => 'required|confirmed',
+        ],
+
+        'updating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => 'confirmed',
+        ],
+    ];
+
+}
+```
+
+Update ```config/entrust-gui.php```
+
+```
+'confirmable' => true,
+```
+
+## Upgrade Guide / Breaking Changes
+
+### 0.3.* to 0.4.0
+
+Starting from 0.4.0 Entrust GUI switches from ```dwightwatson/validating``` to ```esensi/model```. 
+
+This means that hashing passwords has moved from the package to the ```User``` model.
+
+Update your ```User``` model to the one in the latest documentation.
+
+Add ```'confirmable' => false,``` to your configuration file.
+
+If you intend to use the confirmable option and have already published the views add the following to your ```resources/views/vendor/entrust-gui/users/partials/form.blade.php```.
+
+```
+@if(Config::get('entrust-gui.confirmable') === true)
+<div class="form-group">
+    <label for="password">Confirm Password</label>
+    <input type="password" class="form-control" id="password_confirmation" placeholder="Confirm Password" name="password_confirmation">
+</div>
+@endif
+```
 
 ## To do
 
 * Advanced middleware configuration
 * Document code
-* Example of adding password confirmation field
 * CLI for generating User, Permission and Roles
 * Animated video preview
 * Fix spacing on buttons

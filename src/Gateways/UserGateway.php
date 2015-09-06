@@ -59,8 +59,7 @@ class UserGateway implements ManyToManyGatewayInterface
      */
     public function create($request)
     {
-        $data = $request->except('password');
-        $data['password'] = ($request->get('password', false)) ? $this->hash->make($request->get('password', '')) : '';
+        $data = $request->all();
         $user = $this->repository->create($data);
 
         $event_class = "Acoustep\EntrustGui\Events\\".ucwords($this->getModelName()).'CreatedEvent';
@@ -79,9 +78,10 @@ class UserGateway implements ManyToManyGatewayInterface
      */
     public function update($request, $id)
     {
-        $data = $request->except('password');
-        if ($request->get('password', false)) {
-            $data['password'] = $this->hash->make($request->get('password'));
+        $data = $request->except('password', 'password_confirmation');
+        if($request->has('password')) {
+          $data['password'] = $request->get('password');
+          $data['password_confirmation'] = $request->get('password_confirmation');
         }
         $user = $this->repository->update($data, $id);
         $event_class = "Acoustep\EntrustGui\Events\\".ucwords($this->getModelName()).'UpdatedEvent';
@@ -98,7 +98,7 @@ class UserGateway implements ManyToManyGatewayInterface
      */
     public function getModelName()
     {
-      return 'user';
+        return 'user';
     }
 
 }

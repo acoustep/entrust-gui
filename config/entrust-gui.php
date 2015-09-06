@@ -9,4 +9,5 @@ return [
     ],
     "middleware" => 'entrust-gui.admin',
     "middleware-role" => 'admin',
+    "confirmable" => false,
 ];

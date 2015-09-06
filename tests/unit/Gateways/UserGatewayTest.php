@@ -51,10 +51,10 @@ class UserGatewayTest extends \Codeception\TestCase\Test
     {
         $data = $this->getData();
         $request = m::mock('Illuminate\Http\Request');
-        $request->shouldReceive('except')
+        $request->shouldReceive('all')
             ->andReturn($data);
-        $request->shouldReceive('get')
-            ->with('password', '')->andReturn($data['password']);
+        // $request->shouldReceive('get')
+        //     ->with('password', '')->andReturn($data['password']);
         $request->shouldReceive('get')
             ->with('roles', [])
             ->andReturn($data['roles']);
@@ -82,10 +82,14 @@ class UserGatewayTest extends \Codeception\TestCase\Test
         $request = m::mock('Illuminate\Http\Request');
         $request->shouldReceive('except')
             ->andReturn($data);
+        $request->shouldReceive('has')
+            ->with('password')->andReturn(true);
         $request->shouldReceive('get')
             ->with('password', false)->andReturn($data['password']);
         $request->shouldReceive('get')
             ->with('password')->andReturn($data['password']);
+        $request->shouldReceive('get')
+            ->with('password_confirmation')->andReturn($data['password']);
         $request->shouldReceive('get')
             ->with('roles', [])
             ->andReturn($data['roles']);

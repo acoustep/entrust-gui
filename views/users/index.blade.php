@@ -3,7 +3,9 @@
 @section('heading', 'Users')
 
 @section('content')
-<a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::users.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-user') }}</a>
+<div class="models--actions">
+    <a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::users.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-user') }}</a>
+</div>
 <table class="table table-striped">
   <tr>
     <th>Email</th>

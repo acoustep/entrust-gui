@@ -10,6 +10,12 @@
     body {
       margin-top: 60px;
     }
+    form {
+      margin-bottom: 0;
+    }
+    .models--actions {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
