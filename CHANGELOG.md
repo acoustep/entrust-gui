@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Changed
+- Console command for generating model files
+
 ## [0.4.0] - 2015-09-06
 ### Changed
 - Add old input to forms when validation fails.

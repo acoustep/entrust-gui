@@ -2,6 +2,7 @@
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Routing\Router;
+use Acoustep\EntrustGui\Console\Commands\GenerateModels;
 
 /**
  * EntrustGuiServiceProvider
@@ -49,6 +50,8 @@ class EntrustGuiServiceProvider extends ServiceProvider
             [__DIR__.'/../translations' => base_path('resources/lang/vendor/entrust-gui')],
             'translations'
         );
+        // Register commands
+        $this->commands('command.entrust-gui.models');
     }
 
     /**
@@ -89,5 +92,41 @@ class EntrustGuiServiceProvider extends ServiceProvider
             'Acoustep\EntrustGui\Repositories\PermissionRepository',
             'Acoustep\EntrustGui\Repositories\PermissionRepositoryEloquent'
         );
+
+        $this->registerCommands();
+    }
+    /**
+    * Register commands.
+    *
+    * @return void
+    */
+    protected function registerCommands()
+    {
+        $this->registerGenerateModelsCommand();
+    }
+
+    /**
+    * Register the export models command.
+    *
+    * @return void
+    */
+    protected function registerGenerateModelsCommand()
+    {
+        $this->app->singleton('command.entrust-gui.models', function($app) {
+            return new GenerateModels();
+        });
+    }
+
+    /**
+    * List of commands provided by the package.
+    *
+    * @return void
+    */
+    public function provides()
+    {
+        return [
+
+            'command.entrust-gui.models'
+        ];
     }
 }
