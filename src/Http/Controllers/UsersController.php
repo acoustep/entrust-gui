@@ -1,6 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controller as Controller;
 use Acoustep\EntrustGui\Gateways\UserGateway;
 use Illuminate\Http\Request;
 use Watson\Validating\ValidationException;

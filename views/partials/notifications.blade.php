@@ -1,4 +1,4 @@
-@if (count($errors->all()) > 0)
+@if (isset($errors) && count($errors->all()) > 0)
 <div class="row">
   <div class="col-xs-12">
 		<div class="alert alert-danger alert-dissmissable">

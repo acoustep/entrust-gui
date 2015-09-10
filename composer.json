@@ -22,12 +22,21 @@
         "phpunit/phpunit": "~4.1",
         "mockery/mockery": "0.9.*",
         "codeception/codeception": "2.1.*",
-        "codeception/mockery-module": "0.2.*"
+        "codeception/mockery-module": "0.2.*",
+        "mikey179/vfsStream": "1.5.*",
+        "symfony/Console": "2.7.*",
+        "orchestra/testbench": "~3.1",
+        "aedart/testing-laravel": "1.1.*"
     },
     "autoload": {
       "psr-4": {
           "Acoustep\\EntrustGui\\": "src/"
       }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Acoustep\\EntrustGui\\Tests\\": "tests/"
+        }
     },
     "minimum-stability": "dev"
 }
