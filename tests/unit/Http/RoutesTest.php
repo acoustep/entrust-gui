@@ -83,4 +83,32 @@ class RoutesTest extends TestCase
         );
     }
 
+    /** 
+     * @test 
+     * */
+    public function it_can_see_permission_index_page()
+    {
+        $response = $this->route('GET', 'entrust-gui::permissions.index');
+
+        $this->assertResponseOk();
+        $this->assertContains(
+            '<h1>Permissions</h1>',
+            $response->getContent()
+        );
+    }
+
+    /** 
+     * @test 
+     * */
+    public function it_can_see_permission_create_page()
+    {
+        $response = $this->route('GET', 'entrust-gui::permissions.create');
+
+        $this->assertResponseOk();
+        $this->assertContains(
+            '<h1>Create Permission</h1>',
+            $response->getContent()
+        );
+    }
+
 }

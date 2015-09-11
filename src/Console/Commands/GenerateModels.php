@@ -9,7 +9,7 @@ class GenerateModels extends Command
      *
      * @var string
      */
-    protected $signature = 'entrust-gui:models {model=All} {--path=}';
+    protected $signature = 'entrust-gui:models {model=All} {--path=} {--force}';
 
     /**
      * The console command description.
@@ -35,11 +35,11 @@ class GenerateModels extends Command
      */
     public function handle()
     {
-        $path = $this->option('path') .'/';
+        $path = (($this->option('path')) ? $this->option('path') : app_path()) . '/';
         $model = $this->argument('model');
         $files = $this->getFiles($model);
         foreach($files as $file) {
-            $file_path = app_path($path.$file);
+            $file_path = $path.$file;
             if($this->writeable($file_path)) {
                 $this->write($file, $file_path);
                 $this->info($file.' saved to '.$file_path);
@@ -77,6 +77,9 @@ class GenerateModels extends Command
      */
     protected function writeable($file_path)
     {
+        if($this->option('force')) {
+          return true;
+        }
         return  ( ! file_exists($file_path) || (file_exists($file_path) && $this->confirm('Overwrite '.$file_path.'? [y|N]')));
     }
     

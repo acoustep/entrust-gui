@@ -1,8 +1,9 @@
 <?php namespace Acoustep\EntrustGui;
 
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Routing\Router;
 use Acoustep\EntrustGui\Console\Commands\GenerateModels;
+use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
+use Config;
 
 /**
  * EntrustGuiServiceProvider
@@ -124,9 +125,6 @@ class EntrustGuiServiceProvider extends ServiceProvider
     */
     public function provides()
     {
-        return [
-
-            'command.entrust-gui.models'
-        ];
+        return ['command.entrust-gui.models'];
     }
 }

@@ -5,43 +5,29 @@ use Acoustep\EntrustGui\Console\Commands\GenerateModels;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use \Mockery as m;
+use Acoustep\EntrustGui\Tests\TestCase;
+use org\bovigo\vfs\vfsStream;
 
-class GenerateModelsTest extends \PHPUnit_Framework_TestCase
+class GenerateModelsTest extends TestCase
 {
     /**
      * @var \UnitTester
      */
     protected $tester;
 
-    // protected function _before()
-    // {
-    // }
-    //
-    // protected function _after()
-    // {
-    // }
-
     /**
      * @test
      */
-    public function initialisation()
+    public function generate_default()
     {
-        $tester = new GenerateModels;
-        $this->assertInstanceOf(GenerateModels::class, $tester);
-    }
-
-    /**
-     * @test
-     */
-    public function generating_all()
-    {
-        $kernel = m::mock('Symfony\Component\HttpKernel\Kernel');
-        $application = new Application($kernel);
-        $tester = new GenerateModels;
-        $application->add($tester);
-        $command = $application->find('entrust-gui:models');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute([]);
+        $root = vfsStream::setup();
+        $command = $this->artisan('entrust-gui:models', [
+          '--path' => $root->url(),
+          '--force' => 'true',
+        ]);
+        $this->assertTrue($root->hasChild('User.php'));
+        $this->assertTrue($root->hasChild('Permission.php'));
+        $this->assertTrue($root->hasChild('Role.php'));
     }
 
 }
