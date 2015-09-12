@@ -48,123 +48,15 @@ php artisan migrate
 
 Entrust GUI uses [esensi/model](https://github.com/esensi/model) which means you can set your validation rules in your models.
 
-Here are ```User```, ```Role``` and ```Permission``` models to get you started.
-
-### app/User.php
+To generate ```User```, ```Role``` and ```Permission``` models run the ```entrust-gui:models``` command.
 
 ```
-<?php namespace App;
-
-use Esensi\Model\Contracts\HashingModelInterface;
-use Esensi\Model\Contracts\ValidatingModelInterface;
-use Esensi\Model\Traits\HashingModelTrait;
-use Esensi\Model\Traits\ValidatingModelTrait;
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Model;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
-
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface
-{
-    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, HashingModelTrait;
-
-    protected $throwValidationExceptions = true;
-
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
-    protected $table = 'users';
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['name', 'email', 'password'];
-
-    /**
-     * The attributes excluded from the model's JSON form.
-     *
-     * @var array
-     */
-    protected $hidden = ['password', 'remember_token'];
-
-    protected $hashable = ['password'];
-
-    protected $rulesets = [
-
-        'creating' => [
-            'email'      => 'required|email|unique:users',
-            'password'   => 'required',
-        ],
-
-        'updating' => [
-            'email'      => 'required|email|unique:users',
-            'password'   => '',
-        ],
-    ];
-
-}
+php artisan entrust-gui:models
 ```
 
-### app/Role.php
+See the **manually creating models** section if you prefer to adjust your current model files.
 
-```
-<?php namespace App;
-
-use Esensi\Model\Contracts\ValidatingModelInterface;
-use Esensi\Model\Traits\ValidatingModelTrait;
-use Zizaco\Entrust\EntrustRole;
-
-class Role extends EntrustRole implements ValidatingModelInterface
-{
-  use ValidatingModelTrait;
-
-  protected $throwValidationExceptions = true;
-
-  protected $fillable = [
-    'name',
-    'display_name',
-    'description',
-  ];
-
-  protected $rules = [
-    'name'      => 'required|unique:roles',
-    'display_name'      => 'required|unique:roles',
-  ];
-}
-```
-
-### app/Permission.php
-
-```
-<?php namespace App;
-
-use Esensi\Model\Contracts\ValidatingModelInterface;
-use Esensi\Model\Traits\ValidatingModelTrait;
-use Zizaco\Entrust\EntrustPermission;
-
-class Permission extends EntrustPermission implements ValidatingModelInterface
-{
-  use ValidatingModelTrait;
-
-  protected $throwValidationExceptions = true;
-
-  protected $fillable = [
-    'name',
-    'display_name',
-    'description',
-  ];
-
-  protected $rules = [
-    'name'      => 'required|unique:permissions',
-  ];
-}
-```
+By default, all three files are published into the ```app_path()``` directory. You can specify the files separately and the location 
 
 Add the Entrust GUI middleware to ```app\Http\Kernal.php```. This middleware will allow users with the role ```admin``` (case sensitive) to access Entrust GUI and deny other users.
 
@@ -426,6 +318,146 @@ Update ```config/entrust-gui.php```
 'confirmable' => true,
 ```
 
+### Generating Models Command Options
+
+Generating a specific model
+
+```
+php artisan entrust-gui:models User
+```
+
+Changing the model directory destination
+
+```
+php artisan entrust-gui:models --path=new/path
+```
+
+Skipping confirmation prompts for overwriting existing files
+
+```
+php artisan entrust-gui:models --force
+```
+
+
+### Manually Creating Models
+
+Here are ```User```, ```Role``` and ```Permission``` models. Make sure these parameters are and traits are included for the package to work as intended. 
+
+#### app/User.php
+
+```
+<?php namespace App;
+
+use Esensi\Model\Contracts\HashingModelInterface;
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\HashingModelTrait;
+use Esensi\Model\Traits\ValidatingModelTrait;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface
+{
+    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, HashingModelTrait;
+
+    protected $throwValidationExceptions = true;
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['name', 'email', 'password'];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
+
+    protected $hashable = ['password'];
+
+    protected $rulesets = [
+
+        'creating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => 'required',
+        ],
+
+        'updating' => [
+            'email'      => 'required|email|unique:users',
+            'password'   => '',
+        ],
+    ];
+
+}
+```
+
+#### app/Role.php
+
+```
+<?php namespace App;
+
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\ValidatingModelTrait;
+use Zizaco\Entrust\EntrustRole;
+
+class Role extends EntrustRole implements ValidatingModelInterface
+{
+  use ValidatingModelTrait;
+
+  protected $throwValidationExceptions = true;
+
+  protected $fillable = [
+    'name',
+    'display_name',
+    'description',
+  ];
+
+  protected $rules = [
+    'name'      => 'required|unique:roles',
+    'display_name'      => 'required|unique:roles',
+  ];
+}
+```
+
+#### app/Permission.php
+
+```
+<?php namespace App;
+
+use Esensi\Model\Contracts\ValidatingModelInterface;
+use Esensi\Model\Traits\ValidatingModelTrait;
+use Zizaco\Entrust\EntrustPermission;
+
+class Permission extends EntrustPermission implements ValidatingModelInterface
+{
+  use ValidatingModelTrait;
+
+  protected $throwValidationExceptions = true;
+
+  protected $fillable = [
+    'name',
+    'display_name',
+    'description',
+  ];
+
+  protected $rules = [
+    'name'      => 'required|unique:permissions',
+  ];
+}
+```
 ## Upgrade Guide / Breaking Changes
 
 ### 0.3.* to 0.4.0
