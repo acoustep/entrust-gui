@@ -11,7 +11,6 @@ trait GetRoleModelNameTrait
      */
     public function getModelName()
     {
-      return 'role';
+        return 'role';
     }
-
 }

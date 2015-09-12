@@ -15,5 +15,4 @@ class UserDeletedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetUserModelTrait;
-
 }

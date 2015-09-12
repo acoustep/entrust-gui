@@ -16,5 +16,4 @@ class PermissionRepositoryEloquent extends ManyToManyRepositoryEloquent implemen
 {
 
     use GetPermissionModelNameTrait, GetPermissionUserRelationNameTrait;
-
 }

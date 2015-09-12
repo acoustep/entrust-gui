@@ -46,8 +46,11 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $defaults = ['roles' => []];
         $attributes = array_merge($defaults, $attributes);
         $model = parent::create($attributes);
-        if( ! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
-            throw new Exception("User model must implement Esensi\Model\Contracts\HashingModelInterface. Revert to 0.3.* or see upgrade guide for details.");
+        if (! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
+            throw new Exception(
+                "User model must implement Esensi\Model\Contracts\HashingModelInterface.
+                Revert to 0.3.* or see upgrade guide for details."
+            );
         }
         $model->roles()->sync($attributes['roles']);
         return $this->parserResult($model);
@@ -66,12 +69,15 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $defaults = ['roles' => []];
         $attributes = array_merge($defaults, $attributes);
         $model = $this->find($id);
-        if( ! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
-            throw new Exception("User model must implement Esensi\Model\Contracts\HashingModelInterface. Revert to 0.3.* or see upgrade guide for details.");
+        if (! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
+            throw new Exception(
+                "User model must implement Esensi\Model\Contracts\HashingModelInterface. 
+                Revert to 0.3.* or see upgrade guide for details."
+            );
         }
-        if( ! array_key_exists('password', $attributes)) {
+        if (! array_key_exists('password', $attributes)) {
             $model->fill($attributes);
-            if(Config::get('entrust-gui.confirmable') === true) {
+            if (Config::get('entrust-gui.confirmable') === true) {
                 $model->password_confirmation = $model->password;
             }
             $model->saveWithoutHashing();
@@ -81,5 +87,4 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $model->roles()->sync($attributes['roles']);
         return $this->parserResult($model);
     }
-
 }

@@ -88,7 +88,15 @@ abstract class ManyToManyController extends Controller
         } catch (ValidationException $e) {
             return back()->withErrors($e->getErrors())->withInput();
         }
-        return redirect(route('entrust-gui::'.$this->resource.'.index'))->withSuccess(trans('entrust-gui::'.$this->resource.'.created'));
+        return redirect(
+            route(
+                'entrust-gui::'.$this->resource.'.index'
+            )
+        )->withSuccess(
+            trans(
+                'entrust-gui::'.$this->resource.'.created'
+            )
+        );
     }
 
     /**
@@ -125,7 +133,15 @@ abstract class ManyToManyController extends Controller
         } catch (ValidationException $e) {
             return back()->withErrors($e->getErrors())->withInput();
         }
-        return redirect(route('entrust-gui::'.$this->resource.'.index'))->withSuccess(trans('entrust-gui::'.$this->resource.'.updated'));
+        return redirect(
+            route(
+                'entrust-gui::'.$this->resource.'.index'
+            )
+        )->withSuccess(
+            trans(
+                'entrust-gui::'.$this->resource.'.updated'
+            )
+        );
     }
   
     /**
@@ -139,6 +155,14 @@ abstract class ManyToManyController extends Controller
     public function destroy($id)
     {
         $this->gateway->delete($id);
-        return redirect(route('entrust-gui::'.$this->resource.'.index'))->withSuccess(trans('entrust-gui::'.$this->resource.'.destroyed'));
+        return redirect(
+            route(
+                'entrust-gui::'.$this->resource.'.index'
+            )
+        )->withSuccess(
+            trans(
+                'entrust-gui::'.$this->resource.'.destroyed'
+            )
+        );
     }
 }

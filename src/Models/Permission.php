@@ -6,18 +6,17 @@ use Zizaco\Entrust\EntrustPermission;
 
 class Permission extends EntrustPermission implements ValidatingModelInterface
 {
-  use ValidatingModelTrait;
+    use ValidatingModelTrait;
 
-  protected $throwValidationExceptions = true;
+    protected $throwValidationExceptions = true;
 
-  protected $fillable = [
+    protected $fillable = [
     'name',
     'display_name',
     'description',
-  ];
+    ];
 
-  protected $rules = [
+    protected $rules = [
     'name'      => 'required|unique:permissions',
-  ];
+    ];
 }
-

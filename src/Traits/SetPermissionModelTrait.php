@@ -18,4 +18,3 @@ trait SetPermissionModelTrait
         return $this;
     }
 }
-

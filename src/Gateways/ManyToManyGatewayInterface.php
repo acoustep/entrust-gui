@@ -8,6 +8,4 @@ interface ManyToManyGatewayInterface
     public function getRelationName();
 
     public function getShortRelationName();
-
 }
-

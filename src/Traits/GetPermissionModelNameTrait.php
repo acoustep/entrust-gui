@@ -11,9 +11,6 @@ trait GetPermissionModelNameTrait
      */
     public function getModelName()
     {
-      return 'permission';
+        return 'permission';
     }
-
-
 }
-

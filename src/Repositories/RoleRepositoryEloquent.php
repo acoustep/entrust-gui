@@ -16,5 +16,4 @@ class RoleRepositoryEloquent extends ManyToManyRepositoryEloquent implements Rol
 {
 
     use GetRoleModelNameTrait, GetRoleRelationNameTrait;
-
 }

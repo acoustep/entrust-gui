@@ -18,6 +18,4 @@ trait DeleteModelTrait
         $event = new $event_class;
         $this->dispatcher->fire($event->setModel($model));
     }
-
 }
-

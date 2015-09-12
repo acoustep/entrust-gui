@@ -7,7 +7,8 @@
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-trait PaginationGatewayTrait {
+trait PaginationGatewayTrait
+{
 
     /**
      * Paginate permissions
@@ -20,5 +21,4 @@ trait PaginationGatewayTrait {
     {
         return $this->repository->paginate($take);
     }
-
 }

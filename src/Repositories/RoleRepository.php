@@ -19,5 +19,4 @@ interface RoleRepository extends RepositoryInterface
     public function getRelationName();
 
     public function getShortRelationName();
-
 }

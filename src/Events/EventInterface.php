@@ -3,6 +3,5 @@
 interface EventInterface
 {
 
-  public function setModel($model);
-
+    public function setModel($model);
 }

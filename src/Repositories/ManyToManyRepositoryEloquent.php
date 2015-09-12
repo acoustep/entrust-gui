@@ -51,6 +51,4 @@ abstract class ManyToManyRepositoryEloquent extends BaseRepository implements Ro
         $model->{$this->getShortRelationName()}()->sync($attributes["{$this->getRelationName()}"]);
         return $this->parserResult($model);
     }
-
 }
-

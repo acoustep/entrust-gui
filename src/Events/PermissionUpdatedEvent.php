@@ -15,5 +15,4 @@ class PermissionUpdatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetPermissionModelTrait;
-
 }

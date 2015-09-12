@@ -113,7 +113,7 @@ class EntrustGuiServiceProvider extends ServiceProvider
     */
     protected function registerGenerateModelsCommand()
     {
-        $this->app->singleton('command.entrust-gui.models', function($app) {
+        $this->app->singleton('command.entrust-gui.models', function ($app) {
             return new GenerateModels();
         });
     }

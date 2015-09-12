@@ -14,5 +14,4 @@ trait FindModelTrait
     {
         return $this->repository->with($this->getShortRelationName())->find($id);
     }
-
 }

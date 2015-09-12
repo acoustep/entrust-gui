@@ -31,5 +31,4 @@ class RoleGateway extends ManyToManyGateway implements ManyToManyGatewayInterfac
     {
         parent::__construct($config, $repository, $dispatcher);
     }
-
 }

@@ -15,5 +15,4 @@ class PermissionDeletedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetPermissionModelTrait;
-
 }

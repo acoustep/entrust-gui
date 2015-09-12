@@ -84,5 +84,4 @@ abstract class ManyToManyGateway
         $this->dispatcher->fire($event->setModel($model));
         return $model;
     }
-
 }

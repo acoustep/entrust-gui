@@ -15,5 +15,4 @@ class RoleUpdatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetRoleModelTrait;
-
 }

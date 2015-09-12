@@ -26,5 +26,4 @@ class RolesController extends ManyToManyController
     {
         parent::__construct($request, $config, $model, 'roles', 'permission');
     }
-
 }

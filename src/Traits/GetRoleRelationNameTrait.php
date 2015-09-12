@@ -23,5 +23,4 @@ trait GetRoleRelationNameTrait
     {
         return 'perms';
     }
-
 }

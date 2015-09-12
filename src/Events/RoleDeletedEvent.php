@@ -15,5 +15,4 @@ class RoleDeletedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetRoleModelTrait;
-
 }

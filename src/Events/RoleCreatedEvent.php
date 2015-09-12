@@ -15,5 +15,4 @@ class RoleCreatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetRoleModelTrait;
-
 }

@@ -24,6 +24,4 @@ trait GetPermissionUserRelationNameTrait
     {
         return 'roles';
     }
-
 }
-

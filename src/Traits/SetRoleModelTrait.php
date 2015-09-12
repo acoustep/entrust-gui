@@ -17,5 +17,4 @@ trait SetRoleModelTrait
         $this->role = $model;
         return $this;
     }
-
 }

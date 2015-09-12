@@ -15,5 +15,4 @@ class UserCreatedEvent extends Event implements EventInterface
 {
 
     use SerializesModels, SetUserModelTrait;
-
 }

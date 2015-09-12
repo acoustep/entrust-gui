@@ -31,5 +31,4 @@ class PermissionGateway extends ManyToManyGateway implements ManyToManyGatewayIn
     {
         parent::__construct($config, $repository, $dispatcher);
     }
-
 }

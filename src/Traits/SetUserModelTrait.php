@@ -17,6 +17,4 @@ trait SetUserModelTrait
         $this->user = $model;
         return $this;
     }
-
 }
-
