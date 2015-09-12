@@ -14,20 +14,55 @@ class GenerateModelsTest extends TestCase
      * @var \UnitTester
      */
     protected $tester;
+    protected $root;
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->root = vfsStream::setup();
+    }
 
     /**
      * @test
      */
-    public function generate_default()
+    public function generate_with_default_params()
     {
-        $root = vfsStream::setup();
         $command = $this->artisan('entrust-gui:models', [
-          '--path' => $root->url(),
+          '--path' => $this->root->url(),
           '--force' => 'true',
         ]);
-        $this->assertTrue($root->hasChild('User.php'));
-        $this->assertTrue($root->hasChild('Permission.php'));
-        $this->assertTrue($root->hasChild('Role.php'));
+        $this->assertTrue($this->root->hasChild('User.php'));
+        $this->assertTrue($this->root->hasChild('Permission.php'));
+        $this->assertTrue($this->root->hasChild('Role.php'));
+    }
+
+    /**
+     * @test
+     */
+    public function generate_specific_model()
+    {
+        $command = $this->artisan('entrust-gui:models', [
+          'model' => 'User',
+          '--path' => $this->root->url(),
+          '--force' => 'true',
+        ]);
+        $this->assertTrue($this->root->hasChild('User.php'));
+        $this->assertFalse($this->root->hasChild('Permission.php'));
+        $this->assertFalse($this->root->hasChild('Role.php'));
+    }
+
+    /**
+     * @test
+     */
+    public function generate_specific_path()
+    {
+        $command = $this->artisan('entrust-gui:models', [
+          '--path' => $this->root->url().'/models',
+          '--force' => 'true',
+        ]);
+        $this->assertTrue($this->root->hasChild('models/User.php'));
+        $this->assertTrue($this->root->hasChild('models/Permission.php'));
+        $this->assertTrue($this->root->hasChild('models/Role.php'));
     }
 
 }

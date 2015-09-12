@@ -93,6 +93,9 @@ class GenerateModels extends Command
      */
     protected function write($file, $file_path)
     {
+        if( ! is_dir(dirname($file_path))) {
+            mkdir(dirname($file_path), 0755, true);
+        }
         file_put_contents(
             $file_path, 
             file_get_contents(
