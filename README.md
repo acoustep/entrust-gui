@@ -484,6 +484,6 @@ If you intend to use the confirmable option and have already published the views
 ## To do
 
 * Advanced middleware configuration
-* Document code
-* CLI for generating User, Permission and Roles
+* More testing
+* More documentation
 * Animated video preview
