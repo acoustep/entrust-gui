@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class UserDeletedEvent extends Event implements EventInterface
+class UserDeletedEvent implements EventInterface
 {
 
     use SerializesModels, SetUserModelTrait;

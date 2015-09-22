@@ -86,6 +86,8 @@ abstract class TestCase extends BaseTestCase
         $app['config']->set('entrust.role', 'Acoustep\EntrustGui\Models\Role');
         $app['config']->set('entrust.permission', 'Acoustep\EntrustGui\Models\Permission');
         $app['config']->set('entrust-gui.layout', 'entrust-gui::app');
+        $app['config']->set('entrust-gui.route-prefix', 'entrust-gui');
+        $app['config']->set('entrust-gui.confirmable', false);
 
         $this->registerRoutes($app['router']);
     }
@@ -137,7 +139,9 @@ abstract class TestCase extends BaseTestCase
      */
     protected function config()
     {
-        $this->app['config']['auth']['model'] = 'UserDummy';
+        $this->app['config']['auth']['model'] = 'Acoustep\EntrustGui\Models\User';
+        $this->app['config']['entrust']['role'] = 'Acoustep\EntrustGui\Models\Role';
+        $this->app['config']['entrust']['role'] = 'Acoustep\EntrustGui\Models\Permission';
         return $this->app['config'];
     }
 

@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class PermissionUpdatedEvent extends Event implements EventInterface
+class PermissionUpdatedEvent implements EventInterface
 {
 
     use SerializesModels, SetPermissionModelTrait;

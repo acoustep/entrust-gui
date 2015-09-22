@@ -89,7 +89,9 @@ class UsersController extends Controller
         try {
             $user = $this->gateway->create($this->request);
         } catch (ValidationException $e) {
-            return back()->withErrors($e->getErrors())->withInput();
+            return redirect(route('entrust-gui::users.create'))
+                ->withErrors($e->getErrors())
+                ->withInput();
         }
         return redirect(route('entrust-gui::users.index'))
             ->withSuccess(trans('entrust-gui::users.created'));

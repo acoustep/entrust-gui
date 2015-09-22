@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [Unreleased][unreleased]
+### Changed
+- Add user name field to users form
+
 ## [0.5.0] - 2015-09-13
 ### Changed
 - Console command for generating model files

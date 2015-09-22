@@ -11,7 +11,7 @@ use Illuminate\Queue\SerializesModels;
  * @license MIT
  * @package Acoustep\EntrustGui
  */
-class RoleDeletedEvent extends Event implements EventInterface
+class RoleDeletedEvent implements EventInterface
 {
 
     use SerializesModels, SetRoleModelTrait;
