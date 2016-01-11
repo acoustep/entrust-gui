@@ -21,7 +21,7 @@
         "illuminate/console": "~5.0",
         "illuminate/support": "~5.0",
         "prettus/l5-repository": "^2.1",
-        "esensi/model": "0.6.*",
+        "esensi/model": "0.5.*",
         "zizaco/entrust": "dev-laravel-5-2@dev"
     },
     "require-dev": {
