@@ -14,7 +14,7 @@
         "php": ">=5.5.0",
         "illuminate/console": "~5.0",
         "illuminate/support": "~5.0",
-        "zizaco/entrust":  "~1.4.0",
+        "zizaco/entrust":  "dev-laravel-5-2@dev",
         "prettus/l5-repository": "^2.1",
         "esensi/model": "0.5.*"
     },

@@ -1,0 +1,13 @@
+suites:
+  main:
+    namespace: Acoustep\EntrustGui
+    src_path: src
+    spec_path: tests/spec
+
+extensions:
+  - PhpSpec\Laravel\Extension\LaravelExtension
+
+laravel_extension:
+  testing_environment: 'testing'
+
+formatter.name: pretty

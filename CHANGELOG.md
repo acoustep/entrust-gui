@@ -3,9 +3,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-## [Unreleased][unreleased]
+## [0.5.1] - 2015-09-22
 ### Changed
 - Add user name field to users form
+- Remove Event inheritence dependency from the users event class
 
 ## [0.5.0] - 2015-09-13
 ### Changed
