@@ -15,6 +15,8 @@ This package is currently not for handling authentication, authorisation or regi
 
 ## Installation
 
+_For Laravel 5.2 see the [5.2 branch](https://github.com/acoustep/entrust-gui/tree/5.2) for installation details._
+
 Add the package to your ```composer.json``` file
 
 ```
@@ -486,4 +488,3 @@ If you intend to use the confirmable option and have already published the views
 * Advanced middleware configuration
 * More testing
 * More documentation
-* Animated video preview
