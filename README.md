@@ -18,7 +18,8 @@ This package is currently not for handling authentication, authorisation or regi
 Add the package to your ```composer.json``` file
 
 ```
-"acoustep/entrust-gui": "dev-master"
+"acoustep/entrust-gui": "5.2.x-dev",
+"zizaco/entrust": "5.2.x-dev"
 ```
 
 Add the service provider to your ```config/app.php``` file
@@ -38,6 +39,14 @@ Publish the configuration file(s)
 ```
 php artisan vendor:publish --tag="config"
 ```
+
+There is an issue with Entrust when generating the initial migration in Laravel 5.2, to fix this add the following to your ```config/auth.php```.
+
+```
+'table' => 'users',
+'model' => App\User::class,
+```
+
 
 If you haven't already set up Entrust then make the migration file and run the migration.
 
@@ -68,6 +77,12 @@ protected $routeMiddleware = [
 
 ```
 
+Finally, there is currently an issue with Entrust which requires you to set the cache driver to array. This may change in the future. You can change this setting in your ```.env``` file.
+
+```
+CACHE_DRIVER=array
+```
+
 At this point you're all good to go. See Getting Started for how to use the package.
 
 ## Getting Started
@@ -96,10 +111,11 @@ By default Entrust GUI uses ```entrust-gui.admin``` for middleware. This allows 
 
 You can change the middleware in ```config/entrust-gui.php``` in the ```middleware``` setting.
 
-If you wish to test out the system without middleware then go to ```config/entrust-gui.php``` and set middleware to ```null```.
+If you wish to test out the system without middleware then go to ```config/entrust-gui.php```, remove ```entrust-gui.admin``` middleware and keep ```web``` which is required for flash messages to work correctly in Laravel 5.2.
+
 
 ```
-'middleware' => null,
+'middleware' => 'web',
 ```
 
 If you want to change the name of the role that has access to the ```admin``` middleware, update ```middleware-role``` in the configuration file.
