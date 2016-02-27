@@ -7,7 +7,7 @@ return [
         "roles" => 5,
         "permissions" => 5,
     ],
-    "middleware" => 'entrust-gui.admin',
+    "middleware" => ['web', 'entrust-gui.admin'],
     "middleware-role" => 'admin',
     "confirmable" => false,
 ];
