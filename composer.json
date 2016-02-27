@@ -10,19 +10,13 @@
             "email": "acoustep+entrustgui@fastmail.co.uk"
         }
     ],
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/hiendv/entrust"
-        }
-    ],
     "require": {
         "php": ">=5.5.9",
         "illuminate/console": "~5.2",
         "illuminate/support": "~5.2",
         "prettus/l5-repository": "^2.1",
         "esensi/model": "0.6.*",
-        "zizaco/entrust": "dev-laravel-5-2"
+        "zizaco/entrust": "5.2.x-dev"
     },
     "require-dev": {
         "phpunit/phpunit": "~4.1",
