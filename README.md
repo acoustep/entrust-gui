@@ -87,6 +87,14 @@ At this point you're all good to go. See Getting Started for how to use the pack
 
 ## Getting Started
 
+### Using Laravel Authentication
+
+Run the auth command if you haven't already set it up.
+
+```
+php artisan make:auth
+```
+
 ### Accessing Entrust GUI
 
 By default all routes are prefixed with ```/entrust-gui```.
@@ -475,6 +483,10 @@ class Permission extends EntrustPermission implements ValidatingModelInterface
 }
 ```
 ## Upgrade Guide / Breaking Changes
+
+### 0.6
+
+Includes a new config key, ```"unauthorized-url"``` which lets you set the redirection if a user is not authorized. If this key is not found, it will use the old url, ```/auth/login```. The default is set to ```/login``` to match Laravel 5.2's built in authentication route.
 
 ### 0.3.* to 0.4.0
 
