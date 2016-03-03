@@ -7,6 +7,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 - Add user name field to users form
 
+
+## [0.6.0] - 2016-03-03
+### Changed
+- Config option for changing unauthorized redirects
+
 ## [0.5.0] - 2015-09-13
 ### Changed
 - Console command for generating model files
