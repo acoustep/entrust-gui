@@ -23,7 +23,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
      */
     public function model()
     {
-        return Config::get('auth.model');
+        return Config::get('auth.providers.users.model');
     }
 
     /**
