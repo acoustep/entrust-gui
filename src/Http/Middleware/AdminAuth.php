@@ -50,12 +50,12 @@ class AdminAuth
     {
         if ($this->auth->guest()) {
             if ($request->ajax()) {
-                return $this->response->make('Unauthorized.', 401);
+                abort(401, 'Unauthenticated action');
             } else {
                 return $this->redirect->guest($this->config->get('entrust-gui.unauthorized-url', 'auth/login'));
             }
         } elseif (! $request->user()->hasRole($this->config->get('entrust-gui.middleware-role'))) {
-            return $this->response->make('Unauthorized.', 401); //Or redirect() or whatever you want
+            abort(403, 'Unauthorized action'); //Or redirect() or whatever you want
         }
         return $next($request);
     }
