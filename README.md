@@ -274,22 +274,20 @@ Update your ```User``` model to the following:
 ```
 <?php namespace App;
 
-use Esensi\Model\Contracts\HashingModelInterface;
 use Esensi\Model\Contracts\PurgingModelInterface;
-use Esensi\Model\Contracts\ValidatingModelInterface;
-use Esensi\Model\Traits\HashingModelTrait;
 use Esensi\Model\Traits\PurgingModelTrait;
-use Esensi\Model\Traits\ValidatingModelTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Acoustep\EntrustGui\Contracts\HashMethodInterface;
+use Hash;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface, PurgingModelInterface
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashMethodInterface, PurgingModelInterface
 {
-    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, PurgingModelTrait, HashingModelTrait;
+    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, PurgingModelTrait;
 
     protected $throwValidationExceptions = true;
 
@@ -333,6 +331,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         ],
     ];
 
+    public function entrustPasswordHash() 
+    {
+        $this->password = Hash::make($this->password);
+        $this->save();
+    }
 }
 ```
 
@@ -372,9 +375,7 @@ Here are ```User```, ```Role``` and ```Permission``` models. Make sure these par
 ```
 <?php namespace App;
 
-use Esensi\Model\Contracts\HashingModelInterface;
 use Esensi\Model\Contracts\ValidatingModelInterface;
-use Esensi\Model\Traits\HashingModelTrait;
 use Esensi\Model\Traits\ValidatingModelTrait;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -382,10 +383,12 @@ use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Acoustep\EntrustGui\Contracts\HashMethodInterface;
+use Hash;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashingModelInterface
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashMethodInterface
 {
-    use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait, HashingModelTrait;
+  use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait;
 
     protected $throwValidationExceptions = true;
 
@@ -424,6 +427,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'password'   => '',
         ],
     ];
+
+    public function entrustPasswordHash() 
+    {
+        $this->password = Hash::make($this->password);
+        $this->save();
+    }
 
 }
 ```
@@ -483,6 +492,23 @@ class Permission extends EntrustPermission implements ValidatingModelInterface
 }
 ```
 ## Upgrade Guide / Breaking Changes
+
+### 5.2 Branch
+
+Optional removal of ```Esensi\Model\Traits\HashingModelTrait```. Replaced with ```Acoustep\EntrustGui\Contracts\HashMethodInterface``` and allows users to set their own password hashing method for within the Entrust GUI. For the default Laravel 5.2 Auth it's recommended to use the following snippet in your User model.
+
+```
+use Acoustep\EntrustGui\Contracts\HashMethodInterface;
+use Hash;
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashMethodInterface
+    // ...
+    public function entrustPasswordHash() 
+    {
+        $this->password = hash::make($this->password);
+        $this->save();
+    }
+}
+```
 
 ### 0.6
 

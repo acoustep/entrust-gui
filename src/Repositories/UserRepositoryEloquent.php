@@ -46,11 +46,14 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $defaults = ['roles' => []];
         $attributes = array_merge($defaults, $attributes);
         $model = parent::create($attributes);
-        if (! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
+        if ( ! $this->passwordHashIsImplemented($model)) {
             throw new Exception(
-                "User model must implement Esensi\Model\Contracts\HashingModelInterface.
+                "User model must implement either Acoustep\Contracts\HashMethodInterface or Esensi\Model\Contracts\HashingModelInterface.
                 Revert to 0.3.* or see upgrade guide for details."
             );
+        }
+        if(in_array('Acoustep\EntrustGui\Contracts\HashMethodInterface', class_implements($model))) {
+            $model->entrustPasswordHash();
         }
         $model->roles()->sync($attributes['roles']);
         return $this->parserResult($model);
@@ -69,9 +72,9 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
         $defaults = ['roles' => []];
         $attributes = array_merge($defaults, $attributes);
         $model = $this->find($id);
-        if (! in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
+        if ( ! $this->passwordHashIsImplemented($model)) {
             throw new Exception(
-                "User model must implement Esensi\Model\Contracts\HashingModelInterface. 
+                "User model must implement either Acoustep\EntrustGui\Contracts\HashMethodInterface or Esensi\Model\Contracts\HashingModelInterface.
                 Revert to 0.3.* or see upgrade guide for details."
             );
         }
@@ -80,11 +83,21 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             if (Config::get('entrust-gui.confirmable') === true) {
                 $model->password_confirmation = $model->password;
             }
-            $model->saveWithoutHashing();
+            if(in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
+                $model->saveWithoutHashing();
+            }
         } else {
             $model = parent::update($attributes, $id);
+            if(in_array('Acoustep\EntrustGui\EntrustGui\Contracts\HashMethodInterface', class_implements($model))) {
+                $model->entrustPasswordHash();
+            }
+
         }
         $model->roles()->sync($attributes['roles']);
         return $this->parserResult($model);
+    }
+
+    public function passwordHashIsImplemented($model) {
+        return (in_array('Acoustep\EntrustGui\Contracts\HashMethodInterface', class_implements($model)) || in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model)));
     }
 }
