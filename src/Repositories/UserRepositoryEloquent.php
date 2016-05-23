@@ -88,7 +88,7 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             }
         } else {
             $model = parent::update($attributes, $id);
-            if(in_array('Acoustep\EntrustGui\EntrustGui\Contracts\HashMethodInterface', class_implements($model))) {
+            if(in_array('Acoustep\EntrustGui\Contracts\HashMethodInterface', class_implements($model))) {
                 $model->entrustPasswordHash();
             }
 
