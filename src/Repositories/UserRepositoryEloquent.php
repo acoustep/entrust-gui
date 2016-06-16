@@ -85,6 +85,8 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
             }
             if(in_array('Esensi\Model\Contracts\HashingModelInterface', class_implements($model))) {
                 $model->saveWithoutHashing();
+            } else {
+                $model->save();
             }
         } else {
             $model = parent::update($attributes, $id);
