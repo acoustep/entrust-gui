@@ -65,7 +65,7 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $user_class = $this->config->get('auth.model');
+        $user_class = $this->config->get('auth.providers.users.model');
         $user = new $user_class;
         $roles = $this->role->lists('name', 'id');
 
