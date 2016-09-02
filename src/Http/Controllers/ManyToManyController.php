@@ -67,7 +67,7 @@ abstract class ManyToManyController extends Controller
     {
         $model_class = $this->config->get('entrust.'.str_singular($this->resource));
         $model = new $model_class;
-        $relations = $this->relation->lists('name', 'id');
+        $relations = $this->relation->pluck('name', 'id');
 
         return view('entrust-gui::'.$this->resource.'.create', compact(
             'model',
@@ -110,7 +110,7 @@ abstract class ManyToManyController extends Controller
     public function edit($id)
     {
         $model = $this->gateway->find($id);
-        $relations = $this->relation->lists('name', 'id');
+        $relations = $this->relation->pluck('name', 'id');
 
         return view('entrust-gui::'.$this->resource.'.edit', compact(
             'model',
