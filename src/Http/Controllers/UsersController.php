@@ -150,6 +150,9 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
+        if (!config('entrust-gui.users.deletable')) {
+            abort(404);
+        }
         $this->gateway->delete($id);
         return redirect(route('entrust-gui::users.index'))
             ->withSuccess(trans('entrust-gui::users.destroyed'));
