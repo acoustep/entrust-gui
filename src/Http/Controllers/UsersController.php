@@ -65,9 +65,9 @@ class UsersController extends Controller
      */
     public function create()
     {
-        $user_class = $this->config->get('auth.model');
+        $user_class = $this->config->get('auth.providers.users.model');
         $user = new $user_class;
-        $roles = $this->role->lists('name', 'id');
+        $roles = $this->role->pluck('name', 'id');
 
         return view(
             'entrust-gui::users.create',
@@ -109,7 +109,7 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = $this->gateway->find($id);
-        $roles = $this->role->lists('name', 'id');
+        $roles = $this->role->pluck('name', 'id');
 
         return view(
             'entrust-gui::users.edit',
