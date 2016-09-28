@@ -334,7 +334,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function entrustPasswordHash() 
     {
         $this->password = Hash::make($this->password);
-        $this->save();
+        $this->forceSave();
     }
 }
 ```
