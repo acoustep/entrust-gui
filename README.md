@@ -40,13 +40,21 @@ Publish the configuration file(s)
 php artisan vendor:publish --tag="config"
 ```
 
-There is an issue with Entrust when generating the initial migration in Laravel 5.2, to fix this add the following to your ```config/auth.php```.
+Add the ```table``` key with the value ```users``` to the ```providers.users``` array in ```config/auth.php```.
 
 ```
-'table' => 'users',
-'model' => App\User::class,
+    'providers' => [
+        'users' => [
+            'driver' => 'eloquent',
+            'model' => App\User::class,
+            'table' => 'users',
+        ],
+        // 'users' => [
+        //     'driver' => 'database',
+        //     'table' => 'users',
+        // ],
+    ],
 ```
-
 
 If you haven't already set up Entrust then make the migration file and run the migration.
 
