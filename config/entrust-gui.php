@@ -11,4 +11,7 @@ return [
     "unauthorized-url" => '/login',
     "middleware-role" => 'admin',
     "confirmable" => false,
+    "users" => [
+      'fieldSearchable' => [],
+    ],
 ];

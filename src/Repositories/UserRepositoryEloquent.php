@@ -1,5 +1,6 @@
 <?php namespace Acoustep\EntrustGui\Repositories;
 
+use Illuminate\Container\Container as Application;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 use App\Entities\User;
@@ -16,6 +17,13 @@ use Exception;
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
+
+    public function __construct(Application $app) {
+      parent::__construct($app);
+      $this->fieldSearchable = config('entrust-gui.users.fieldSearchable', []);
+    }
+
+
     /**
      * Specify Model class name
      *
