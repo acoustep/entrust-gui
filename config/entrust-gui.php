@@ -13,5 +13,6 @@ return [
     "confirmable" => false,
     "users" => [
         'deletable' => true,
+        'fieldSearchable' => [],
     ],
 ];
