@@ -499,9 +499,40 @@ class Permission extends EntrustPermission implements ValidatingModelInterface
   ];
 }
 ```
+
+### Custom queries, sorting and filters for users
+
+If you would like to search, sort and filter the users you can use the l5-repository searchable fields feature.
+
+In your entrust-gui.php configuration file, add the fields that you wish to be searchable 
+
+```
+    "users" => [
+       'fieldSearchable' => [
+           'email'
+       ],
+     ],
+```
+You can now create links such as the following:
+
+* http://localhost.dev/entrust-gui/users?search=John%20Doe
+* http://localhost.dev/entrust-gui/users?search=email&searchFields=email:like
+* http://localhost.dev/entrust-gui/users?search=email&searchFields=email:like&orderBy=email&sortedBy=asc
+* http://tcascompressors.dev/admin/users?filter=email
+
+You can read more about these options [here](https://github.com/andersao/l5-repository#using-the-requestcriteria)
+
 ## Upgrade Guide / Breaking Changes
 
 ### 5.2 Branch
+
+Add the following to the ```config/entrust-gui.php``` configuration file to enable custom sorting and filters
+
+```
+    "users" => [
+       'fieldSearchable' => [],
+     ],
+```
 
 Optional removal of ```Esensi\Model\Traits\HashingModelTrait```. Replaced with ```Acoustep\EntrustGui\Contracts\HashMethodInterface``` and allows users to set their own password hashing method for within the Entrust GUI. For the default Laravel 5.2 Auth it's recommended to use the following snippet in your User model.
 
