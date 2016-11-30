@@ -13,7 +13,7 @@
     </tr>
     @foreach($models as $model)
         <tr>
-            <td>{{ $model->name }}</th>
+            <td>{{ $model->display_name }}</th>
             <td class="col-xs-3">
                 <form action="{{ route('entrust-gui::permissions.destroy', $model->id) }}" method="post">
                     <input type="hidden" name="_method" value="DELETE">
