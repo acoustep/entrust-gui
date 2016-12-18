@@ -1,6 +1,8 @@
 <?php namespace Acoustep\EntrustGui\Console\Commands;
 
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Input\InputArgument;
 
 class GenerateModels extends Command
 {
@@ -9,7 +11,7 @@ class GenerateModels extends Command
      *
      * @var string
      */
-    protected $signature = 'entrust-gui:models {model=All} {--path=} {--force}';
+    protected $name = 'entrust-gui:models {model=All} {--path=} {--force}';
 
     /**
      * The console command description.
@@ -36,7 +38,7 @@ class GenerateModels extends Command
     public function handle()
     {
         $path = (($this->option('path')) ? $this->option('path') : app_path()) . '/';
-        $model = $this->argument('model');
+        $model = $this->option('model');
         $files = $this->getFiles($model);
         foreach ($files as $file) {
             $file_path = $path.$file;
@@ -77,7 +79,7 @@ class GenerateModels extends Command
      */
     protected function writeable($file_path)
     {
-        if ($this->option('force')) {
+        if ($this->argument('force')) {
             return true;
         }
         return  ( ! file_exists($file_path) || $this->confirmable($file_path));
@@ -115,5 +117,20 @@ class GenerateModels extends Command
                 .'.txt'
             )
         );
+    }
+
+    protected function getOptions()
+    {
+        return [
+            ['path', null, InputOption::VALUE_OPTIONAL, 'The path to create the model files', app_path()],
+            ['model', null, InputOption::VALUE_OPTIONAL, 'The model files to create', 'All'],
+        ];
+    }
+
+    protected function getArguments()
+    {
+        return [
+            ['force', InputArgument::OPTIONAL, 'Ignore existing file warnings', false],
+        ];
     }
 }
