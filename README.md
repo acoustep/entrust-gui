@@ -20,7 +20,7 @@ _For Laravel 5.2 and 5.3 see the [5.2 branch](https://github.com/acoustep/entrus
 Add the package to your ```composer.json``` file
 
 ```
-"acoustep/entrust-gui": "dev-master"
+"acoustep/entrust-gui": "5.0.x-dev",
 ```
 
 Add the service provider to your ```config/app.php``` file
