@@ -62,6 +62,23 @@ If you haven't already set up Entrust then make the migration file and run the m
 php artisan entrust:migration
 php artisan migrate
 ```
+If you see the following error:
+```
+ [Illuminate\Database\QueryException]
+  SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes (SQL: alter table
+   `users` add unique `users_email_unique`(`email`))
+```
+Add the following to your `app/Providers/AppServiceProvider.php`
+
+```
+use Illuminate\Support\Facades\Schema;
+...
+public function boot() {
+    Schema::defaultStringLength(191);
+}
+```
+
+Rerun the entrust migration afterwards (You may need to clear your database, too).
 
 Entrust GUI uses [esensi/model](https://github.com/esensi/model) which means you can set your validation rules in your models.
 
