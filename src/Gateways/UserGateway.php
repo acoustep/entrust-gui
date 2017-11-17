@@ -79,7 +79,7 @@ class UserGateway implements ManyToManyGatewayInterface
     public function update($request, $id)
     {
         $data = $request->except('password', 'password_confirmation');
-        if ($request->has('password')) {
+        if ($request->has('password') && $request->get('password') !== null) {
             $data['password'] = $request->get('password');
             $data['password_confirmation'] = $request->get('password_confirmation');
         }
