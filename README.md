@@ -18,7 +18,7 @@ This package is currently not for handling authentication, authorisation or regi
 Add the package to your ```composer.json``` file
 
 ```
-"acoustep/entrust-gui": "5.2.x-dev",
+"acoustep/entrust-gui": "5.8.x-dev",
 "zizaco/entrust": "5.2.x-dev"
 ```
 
