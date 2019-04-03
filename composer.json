@@ -11,9 +11,9 @@
         }
     ],
     "require": {
-        "php": ">=5.5.9",
-        "illuminate/console": "~5.2",
-        "illuminate/support": "~5.2",
+        "php": ">=7.1.3",
+        "illuminate/console": "~5.8.0",
+        "illuminate/support": "~5.8.0",
         "prettus/l5-repository": "^2.1",
         "esensi/model": "0.6.*"
     },
@@ -23,8 +23,7 @@
         "codeception/codeception": "2.1.*",
         "codeception/mockery-module": "0.2.*",
         "mikey179/vfsStream": "1.5.*",
-        "symfony/Console": "2.8.*",
-        "orchestra/testbench": "~3.2"
+        "symfony/Console": "^4.2"
     },
     "autoload": {
       "psr-4": {
