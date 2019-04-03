@@ -16,6 +16,6 @@ trait DeleteModelTrait
         $this->repository->delete($id);
         $event_class = "Acoustep\EntrustGui\Events\\".ucwords($this->getModelName()).'DeletedEvent';
         $event = new $event_class;
-        $this->dispatcher->fire($event->setModel($model));
+        $this->dispatcher->handle($event->setModel($model));
     }
 }

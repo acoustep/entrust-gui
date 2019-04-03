@@ -62,7 +62,9 @@ If you haven't already set up Entrust then make the migration file and run the m
 php artisan entrust:migration
 php artisan migrate
 ```
+
 If you see the following error:
+
 ```
  [Illuminate\Database\QueryException]
   SQLSTATE[42000]: Syntax error or access violation: 1071 Specified key was too long; max key length is 767 bytes (SQL: alter table
@@ -76,6 +78,27 @@ use Illuminate\Support\Facades\Schema;
 public function boot() {
     Schema::defaultStringLength(191);
 }
+```
+
+If you then see this error
+
+```
+ReflectionException  : Method Zizaco\Entrust\MigrationCommand::handle() does not exist
+```
+
+This is an issue with `Entrust`, there is a temporary fix by going to `vendor-> zizaco-> entrust-> src-> commands-> MigrationCommand.php` and changing `fire()` to `handle()` and re-running thie migration. [See here for more details](https://github.com/Zizaco/entrust/issues/836). Once this is done, rerun the migration commands.
+
+Finally, if you have this error
+
+```
+(errno: 150 "Foreign key constraint is incorrectly formed") (SQL: alter table `role_user` add constraint `role_user_user_id_foreign` foreign key (`user_id`) references `users` (`id`) on delete cascade on update cascade)
+```
+
+Go to the newly created migration file (`entrust_setup_tables`) and remove this line
+
+```
+  // $table->foreign('user_id')->references('id')->on('users')
+  //     ->onUpdate('cascade')->onDelete('cascade');
 ```
 
 Rerun the entrust migration afterwards (You may need to clear your database, too).

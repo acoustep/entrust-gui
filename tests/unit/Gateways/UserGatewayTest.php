@@ -63,7 +63,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('create');
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\UserCreatedEvent");
         $event->shouldReceive('setModel');
@@ -98,7 +98,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('update');
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\UserUpdatedEvent");
         $event->shouldReceive('setModel');
@@ -122,7 +122,7 @@ class UserGatewayTest extends \Codeception\TestCase\Test
         $this->repository->shouldReceive('find')->andReturn($data);
         $this->repository->shouldReceive('delete')->with($id);
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\UserDeletedEvent");
         $event->shouldReceive('setModel');

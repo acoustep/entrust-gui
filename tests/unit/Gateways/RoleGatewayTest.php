@@ -52,7 +52,7 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('create->perms->sync')
             ->once();
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         // $this->event_created_class->shouldReceive('setModel')
         //       ->with(m::any());
@@ -90,7 +90,7 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('update')->andReturn($data);
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\RoleUpdatedEvent");
         $event->shouldReceive('setModel');
@@ -110,7 +110,7 @@ class RoleGatewayTest extends \Codeception\TestCase\Test
         $this->repository->shouldReceive('find')->andReturn($data);
         $this->repository->shouldReceive('delete')->with($id);
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\RoleDeletedEvent");
         $event->shouldReceive('setModel');

@@ -52,7 +52,7 @@ class PermissionGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('create->roles->sync')
             ->once();
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\PermissionCreatedEvent");
         $event->shouldReceive('setModel');
@@ -88,7 +88,7 @@ class PermissionGatewayTest extends \Codeception\TestCase\Test
 
         $this->repository->shouldReceive('update')->andReturn($data);
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\PermissionUpdatedEvent");
         $event->shouldReceive('setModel');
@@ -108,7 +108,7 @@ class PermissionGatewayTest extends \Codeception\TestCase\Test
         $this->repository->shouldReceive('find')->andReturn($data);
         $this->repository->shouldReceive('delete')->with($id);
 
-        $this->dispatcher->shouldReceive('fire')
+        $this->dispatcher->shouldReceive('handle')
               ->with(m::any());
         $event = m::mock("overload:Acoustep\EntrustGui\Events\PermissionDeletedEvent");
         $event->shouldReceive('setModel');
