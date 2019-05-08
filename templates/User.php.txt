@@ -2,18 +2,16 @@
 
 use Esensi\Model\Contracts\ValidatingModelInterface;
 use Esensi\Model\Traits\ValidatingModelTrait;
-use Illuminate\Auth\Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Illuminate\Database\Eloquent\Model;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Acoustep\EntrustGui\Contracts\HashMethodInterface;
 use Hash;
 
-class User extends Model implements AuthenticatableContract, CanResetPasswordContract, ValidatingModelInterface, HashMethodInterface
+class User extends Authenticatable implements CanResetPasswordContract, ValidatingModelInterface, HashMethodInterface
 {
-  use Authenticatable, CanResetPassword, ValidatingModelTrait, EntrustUserTrait;
+  use CanResetPassword, ValidatingModelTrait, EntrustUserTrait;
 
     protected $throwValidationExceptions = true;
 
