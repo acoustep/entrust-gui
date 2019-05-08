@@ -19,7 +19,8 @@ Add the package to your ```composer.json``` file
 
 ```
 "acoustep/entrust-gui": "5.8.x-dev",
-"zizaco/entrust": "5.2.x-dev"
+"zizaco/entrust": "5.2.x-dev",
+"watson/validating": "3.2.0 as 2.0.1"
 ```
 
 Add the service provider to your ```config/app.php``` file
