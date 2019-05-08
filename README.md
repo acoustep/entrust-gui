@@ -15,8 +15,9 @@ This package is currently not for handling authentication, authorisation or regi
 
 ## Installation
 
-_For Laravel 5.2 and 5.3 see the [5.2 branch](https://github.com/acoustep/entrust-gui/tree/5.2) for installation details._
+_For Laravel 5.2 - 5.7 see the [5.2 branch](https://github.com/acoustep/entrust-gui/tree/5.2) for installation details._
 
+_For Laravel 5.8+ see the [5.8 branch](https://github.com/acoustep/entrust-gui/tree/5.8) for installation details._
 Add the package to your ```composer.json``` file
 
 ```
