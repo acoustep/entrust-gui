@@ -95,11 +95,20 @@ Finally, if you have this error
 (errno: 150 "Foreign key constraint is incorrectly formed") (SQL: alter table `role_user` add constraint `role_user_user_id_foreign` foreign key (`user_id`) references `users` (`id`) on delete cascade on update cascade)
 ```
 
-Go to the newly created migration file (`entrust_setup_tables`) and remove this line
+Go to the newly created migration file (`entrust_setup_tables`) and update the `user_id` foreign key constraint in `role_user` to use `bigInteger`.
 
 ```
-  // $table->foreign('user_id')->references('id')->on('users')
-  //     ->onUpdate('cascade')->onDelete('cascade');
+Schema::create('role_user', function (Blueprint $table) {
+            $table->bigInteger('user_id')->unsigned();
+            $table->integer('role_id')->unsigned();
+
+            // $table->foreign('user_id')->references('id')->on('users')
+            //     ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('role_id')->references('id')->on('roles')
+                ->onUpdate('cascade')->onDelete('cascade');
+
+            $table->primary(['user_id', 'role_id']);
+});
 ```
 
 Rerun the entrust migration afterwards (You may need to clear your database, too).
