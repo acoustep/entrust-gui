@@ -6,6 +6,7 @@
 [![Total Downloads](https://poser.pugx.org/acoustep/entrust-gui/downloads)](https://packagist.org/packages/acoustep/entrust-gui)
 [![Latest Unstable Version](https://poser.pugx.org/acoustep/entrust-gui/v/unstable)](https://packagist.org/packages/acoustep/entrust-gui)
 [![License](https://poser.pugx.org/acoustep/entrust-gui/license)](https://packagist.org/packages/acoustep/entrust-gui)
+[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/P5P311GU6)
 
 Entrust GUI is a Admin Interface that makes the administration of users, roles and permissions easier for the [Entrust](https://github.com/Zizaco/entrust) package.
 
@@ -623,6 +624,10 @@ If you intend to use the confirmable option and have already published the views
 </div>
 @endif
 ```
+
+## Support Entrust GUI
+
+Entrust GUI is maintained entirely in my own time. If you'd like to help, please feel free to open an issue with feature requests or proposals. If you'd like to buy me a coffee to say thanks, check out my [ko-fi page](https://ko-fi.com/P5P311GU6).
 
 ## To do
 
