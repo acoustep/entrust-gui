@@ -11,14 +11,17 @@ trait PaginationGatewayTrait
 {
 
     /**
-     * Paginate permissions
+     * Paginate models
      *
      * @param integer $take
      *
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function paginate($take = 5)
+    public function paginate($take = 5, $search = "")
     {
-        return $this->repository->paginate($take);
+	    $search = trim($search);
+	    return $this->repository->scopeQuery(function($query) use ($search) {
+		    return ($search != "") ? $query->where('name', 'LIKE', '%'.$search.'%') : $query;
+	    })->paginate($take);
     }
 }

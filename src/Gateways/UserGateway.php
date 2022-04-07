@@ -100,4 +100,19 @@ class UserGateway implements ManyToManyGatewayInterface
     {
         return 'user';
     }
+
+    /**
+     * Paginate models
+     *
+     * @param integer $take
+     *
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function paginate($take = 5, $search = "")
+    {
+	    $search = trim($search);
+	    return $this->repository->scopeQuery(function($query) use ($search) {
+		    return ($search != "") ? $query->where('email', 'LIKE', '%'.$search.'%')->orWhere('name', 'LIKE', '%'.$search.'%') : $query;
+	    })->paginate($take);
+    }
 }

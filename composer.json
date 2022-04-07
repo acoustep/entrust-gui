@@ -23,8 +23,8 @@
         "mockery/mockery": "0.9.*",
         "codeception/codeception": "2.1.*",
         "codeception/mockery-module": "0.2.*",
-        "mikey179/vfsStream": "1.5.*",
-        "symfony/Console": "^4.2"
+        "mikey179/vfsstream": "1.5.*",
+        "symfony/console": "^4.2"
     },
     "autoload": {
       "psr-4": {
@@ -36,5 +36,10 @@
             "Acoustep\\EntrustGui\\Tests\\": "tests/"
         }
     },
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "config": {
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    }
 }

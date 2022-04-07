@@ -4,7 +4,17 @@
 
 @section('content')
 <div class="models--actions">
-    <a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-role') }}</a>
+  <div class="col-lg-4">
+      <a class="btn btn-labeled btn-primary" href="{{ route('entrust-gui::roles.create') }}"><span class="btn-label"><i class="fa fa-plus"></i></span>{{ trans('entrust-gui::button.create-role') }}</a>
+  </div>
+  <div class="col-md-4 col-md-offset-4">
+    <form action="" class="input-group" method="get">
+      <input type="search" name="search" value="{{request('search', '')}}" placeholder="Search" type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button">Go!</button>
+      </span>
+    </form>
+  </div><!-- /.col-lg-6 -->
 </div>
 <table class="table table-striped">
     <tr>

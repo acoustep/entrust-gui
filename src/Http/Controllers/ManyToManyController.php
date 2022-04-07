@@ -50,7 +50,7 @@ abstract class ManyToManyController extends Controller
      */
     public function index()
     {
-        $models = $this->gateway->paginate($this->config->get('entrust-gui.pagination.'.$this->resource));
+        $models = $this->gateway->paginate($this->config->get('entrust-gui.pagination.'.$this->resource), $this->request->get('search', ''));
 
         return view('entrust-gui::'.$this->resource.'.index', compact(
             "models"
